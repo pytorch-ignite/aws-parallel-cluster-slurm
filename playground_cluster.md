@@ -1,4 +1,4 @@
-#### Testing cluster
+### Testing cluster
 
 ```bash
 pcluster create aws-playground-cluster -c configs/playground
@@ -75,3 +75,34 @@ cd slurm-examples
 sbatch script1.bash
 squeue
 ```
+
+#### Update cluster
+
+To modify configuration and apply it to the existing cluster:
+
+```bash
+pcluster stop -c configs/playground aws-playground-cluster
+
+pcluster update -c configs/playground aws-playground-cluster
+
+...
+
+pcluster start -c configs/playground aws-playground-cluster
+
+pcluster status -c configs/playground aws-playground-cluster
+```
+
+#### GPU examples
+
+1. Setup conda environment
+
+Connect to the cluster and execute:
+```bash
+conda env list
+
+conda create -n test-gpu
+conda activate test-gpu
+conda install pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
+```
+
+2. 

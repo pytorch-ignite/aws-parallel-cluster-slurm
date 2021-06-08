@@ -10,6 +10,7 @@
 - https://github.com/aws/aws-parallelcluster/wiki
 - https://aws.amazon.com/blogs/opensource/managing-aws-parallelcluster-ssh-users-with-openldap/
 - https://aws.amazon.com/blogs/opensource/aws-parallelcluster/
+- https://sc20.hpcworkshops.com/09-ml-on-parallelcluster.html
 
 
 ### Requirements
