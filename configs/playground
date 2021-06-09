@@ -19,6 +19,8 @@ queue_settings = compute-spot, compute-on-demand
 scaling_settings = custom
 ebs_settings = code, data
 
+
+
 [vpc default]
 vpc_id = vpc-02f09b62b0a1d6b2d
 master_subnet_id = subnet-0a2506c87b78c7d27
