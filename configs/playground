@@ -29,13 +29,13 @@ use_public_ips = false
 enable_efa = false
 enable_efa_gdr = false
 compute_type = spot
-compute_resource_settings = cpu-spot, gpu-t4x1-spot, gpu-m60x2-spot
+compute_resource_settings = cpu-spot, gpu-t4x1-spot
 
 [queue compute-on-demand]
 enable_efa = false
 enable_efa_gdr = false
 compute_type = ondemand
-compute_resource_settings = cpu-on-demand
+compute_resource_settings = cpu-on-demand, gpu-t4x1-on-demand
 
 [compute_resource cpu-spot]
 initial_count = 0
@@ -55,6 +55,11 @@ max_count = 4
 [compute_resource cpu-on-demand]
 initial_count = 0
 instance_type = t3.micro
+max_count = 4
+
+[compute_resource gpu-t4x1-on-demand]
+initial_count = 0
+instance_type = g4dn.xlarge
 max_count = 4
 
 [scaling custom]

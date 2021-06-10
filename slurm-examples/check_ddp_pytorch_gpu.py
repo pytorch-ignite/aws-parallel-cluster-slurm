@@ -50,7 +50,7 @@ if __name__ == "__main__":
     torch.cuda.set_device(int(os.environ["LOCAL_RANK"]))
 
     pprint(dist.get_world_size())
-    t = torch.ones(5) * dist.get_rank()
+    t = (torch.ones(5) * (dist.get_rank() + 1.0)).cuda()
     pprint(t)
     dist.all_reduce(t)
     pprint(t)
