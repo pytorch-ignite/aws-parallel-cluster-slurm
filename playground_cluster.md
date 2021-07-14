@@ -49,9 +49,9 @@ conda env list
 ```
 
 ```bash
-conda create -n test
-conda install pytorch cpuonly -c pytorch
+conda create -n -y test
 conda activate test
+conda install -y  pytorch cpuonly -c pytorch
 srun -N 2 -l conda env list
 >
 1: # conda environments:
@@ -100,9 +100,16 @@ Connect to the cluster and execute:
 ```bash
 conda env list
 
-conda create -n test-gpu
+conda create -n -y test-gpu
 conda activate test-gpu
-conda install pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
+conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
 ```
 
-2. 
+2.
+
+
+#### Remove existing cluster
+
+```
+pcluster delete -c configs/playground aws-playground-cluster
+```
