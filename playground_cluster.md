@@ -72,7 +72,7 @@ Connect to the cluster and activate "test" environment:
 ```bash
 conda activate test
 cd slurm-examples
-sbatch script1.bash
+sbatch script1.sbatch
 squeue
 ```
 
