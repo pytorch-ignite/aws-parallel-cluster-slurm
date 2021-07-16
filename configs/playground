@@ -17,7 +17,7 @@ base_os = ubuntu1804
 vpc_settings = default
 queue_settings = compute-spot, compute-on-demand
 scaling_settings = custom
-ebs_settings = data
+ebs_settings = shared
 
 [vpc default]
 vpc_id = vpc-02f09b62b0a1d6b2d
@@ -30,12 +30,16 @@ enable_efa = false
 enable_efa_gdr = false
 compute_type = spot
 compute_resource_settings = cpu-spot, gpu-t4x1-spot
+disable_hyperthreading = true
+placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
 [queue compute-on-demand]
 enable_efa = false
 enable_efa_gdr = false
 compute_type = ondemand
 compute_resource_settings = cpu-on-demand, gpu-t4x1-on-demand
+disable_hyperthreading = true
+placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
 [compute_resource cpu-spot]
 initial_count = 0
@@ -65,7 +69,7 @@ max_count = 4
 [scaling custom]
 scaledown_idletime = 7
 
-[ebs data]
-shared_dir = data
+[ebs shared]
+shared_dir = /shared
 volume_type = st1
 volume_size = 500

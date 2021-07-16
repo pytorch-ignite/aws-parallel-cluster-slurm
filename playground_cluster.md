@@ -2,6 +2,8 @@
 
 ```bash
 pcluster create aws-playground-cluster -c configs/playground
+
+pcluster status -c configs/playground aws-playground-cluster
 ```
 
 1. Check connection to the head node
@@ -33,17 +35,48 @@ srun -N 2 -n 2 -l hostname
 1: compute-spot-dy-t3micro-2
 ```
 
+2.1 Module Environment
+
+- https://www.hpcworkshops.com/03-hpc-aws-parallelcluster-workshop/07-logon-pc.html
+
+List available modules (below command can be unavailable):
+
+```bash
+module av
+>
+---------------------------------------------------------------- /usr/share/modules/modulefiles -----------------------------------------------------------------
+dot  libfabric-aws/1.11.2amzn1.1  module-git  module-info  modules  null  openmpi/4.1.1  use.own
+
+---------------------------------------------------------------- /usr/share/modules/modulefiles -----------------------------------------------------------------
+dot  libfabric-aws/1.11.2amzn1.1  module-git  module-info  modules  null  openmpi/4.1.1  use.own
+
+-------------------------------------------------------- /opt/intel/impi/2019.8.254/intel64/modulefiles ---------------------------------------------------------
+intelmpi
+```
+
+2.2 NFS Shares
+
+List mounted volumes:
+
+```bash
+showmount -e localhost
+>
+Export list for localhost:
+/opt/slurm 10.0.0.0/16
+/opt/intel 10.0.0.0/16
+/home      10.0.0.0/16
+/shared    10.0.0.0/16
+```
+
 
 3. Setup conda environment
 
 Connect to the cluster and execute:
 ```bash
-cd /code
-wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
-bash Miniconda3-py39_4.9.2-Linux-x86_64.sh
-...
+git clone git@github.com:pytorch-ignite/aws-parallel-cluster-slurm.git
+cd aws-parallel-cluster-slurm/setup/playground/
+sh install_miniconda.sh
 
-conda init bash
 source ~/.bashrc
 conda env list
 ```

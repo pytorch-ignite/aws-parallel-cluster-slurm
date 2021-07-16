@@ -6,13 +6,6 @@
 
 ## Cluster Setup
 
-- https://docs.aws.amazon.com/parallelcluster/latest/ug/getting_started.html
-- https://github.com/aws/aws-parallelcluster/wiki
-- https://aws.amazon.com/blogs/opensource/managing-aws-parallelcluster-ssh-users-with-openldap/
-- https://aws.amazon.com/blogs/opensource/aws-parallelcluster/
-- https://sc20.hpcworkshops.com/09-ml-on-parallelcluster.html
-
-
 ### Requirements
 
 
@@ -40,6 +33,12 @@ aws configure
 3. Create PEM identity file on AWS console
 - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 
+In the command line:
+```bash
+aws ec2 create-key-pair --key-name playground-cluster --output text > ~/.ssh/aws-playground-cluster.pem
+chmod 600 ~/.ssh/aws-playground-cluster.pem
+```
+
 
 ### Configure AWS ParallelCluster
 - https://docs.aws.amazon.com/parallelcluster/latest/ug/configuration.html
@@ -65,3 +64,15 @@ pcluster create aws-deeplearning-cluster -c configs/deeplearning
 - https://slurm.schedmd.com/man_index.html
 
 `srun`, `sbatch`, `sinfo`, `squeue`, `scancel`
+
+
+## References
+
+- https://docs.aws.amazon.com/parallelcluster/latest/ug/getting_started.html
+- https://github.com/aws/aws-parallelcluster/wiki
+- https://aws.amazon.com/blogs/opensource/managing-aws-parallelcluster-ssh-users-with-openldap/
+- https://aws.amazon.com/blogs/opensource/aws-parallelcluster/
+- https://sc20.hpcworkshops.com/09-ml-on-parallelcluster.html
+- https://github.com/aws-samples/no-tears-cluster/blob/release/USER_GUIDE.md
+- https://github.com/aws-samples/1click-hpc/tree/main/docs
+- https://www.hpcworkshops.com/01-hpc-overview.html
