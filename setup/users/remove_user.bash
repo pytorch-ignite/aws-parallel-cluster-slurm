@@ -18,6 +18,6 @@ else
 fi
 
 # Remove existing user
-sudo userdel -r $USERNAME
+sudo deluser --remove-home $USERNAME
 # Remove user from .userslist
-sudo sed -i '$USERNAME/d' /shared/.userslist
+sudo sed -i '/$USERNAME `id -u $USERNAME/d' /shared/.userslist
