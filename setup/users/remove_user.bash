@@ -11,13 +11,14 @@ fi
 
 # Need to check if user exists:
 if id "$USERNAME" &>/dev/null; then
-    echo 'User found'
+    echo 'User $USERNAME found'
 else
-    echo 'User not found'
+    echo 'User $USERNAME not found'
     exit 1
 fi
 
-# Remove existing user
-sudo deluser --remove-home $USERNAME
 # Remove user from .userslist
 sudo sed -i '/$USERNAME `id -u $USERNAME/d' /shared/.userslist
+# Remove existing user
+sudo deluser --remove-home $USERNAME
+echo "User $USERNAME deleted"
