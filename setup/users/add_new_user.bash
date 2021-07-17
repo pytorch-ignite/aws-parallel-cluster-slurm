@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/bin/bash
+
+users_filepath="/shared/.userslist"
 
 # Only take action if two arguments are provided and the second is a local file
 if [ $# -eq 2 ] && [ -f "$2" ] ; then
@@ -11,14 +13,20 @@ else
   exit 1
 fi
 
-# Create new user
-sudo useradd $USERNAME
-echo "newuser `id -u newuser`" >> /shared/.userslist
+# Check if user does not exist:
+res=`cut -d : -f 1 /etc/passwd | grep $USERNAME`
+if [ -n "$res" ] ; then
+  echo "User $USERNAME exists. Please, add another user name"
+  exit 1
+fi
 
-# Create the user home and .ssh directory, set up the authorized_keys file
-# Note this will overwrite any existing keys if used multiple times
-mkhomedir_helper $USERNAME
-mkdir -p /home/$USERNAME/.ssh
-cat $KEYFILE > /home/$USERNAME/.ssh/authorized_keys
-chmod 600 /home/$USERNAME/.ssh/authorized_keys
-chown -R $USERNAME:users /home/$USERNAME
+set -e
+
+# Create new user
+sudo useradd --create-home $USERNAME
+sudo echo "$USERNAME `id -u $USERNAME`" >> $users_filepath
+
+# Create .ssh directory, set up the authorized_keys file
+sudo mkdir /home/$USERNAME/.ssh
+sudo bash -c "cat $KEYFILE > /home/$USERNAME/.ssh/authorized_keys"
+sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
