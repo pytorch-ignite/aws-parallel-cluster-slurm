@@ -1,12 +1,19 @@
 ### Testing cluster
 
+0. Make sure to upload `post_install.bash` script to S3
+```bash
+aws s3 cp setup/playground/post_install.bash s3://aws-parallel-cluster-slurm/playground/post_install.bash
+```
+
+1. Create cluster:
+
 ```bash
 pcluster create aws-playground-cluster -c configs/playground
 
 pcluster status -c configs/playground aws-playground-cluster
 ```
 
-1. Check connection to the head node
+1.1 Check connection to the head node
 ```bash
 pcluster ssh aws-playground-cluster -i ~/.ssh/aws-playground-cluster.pem
 ```
@@ -138,7 +145,14 @@ conda activate test-gpu
 conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
 ```
 
-2.
+2. Submit GPU job
+
+```bash
+conda activate test-gpu
+cd slurm-examples
+sbatch script5.sbatch
+squeue
+```
 
 
 #### Remove existing cluster
