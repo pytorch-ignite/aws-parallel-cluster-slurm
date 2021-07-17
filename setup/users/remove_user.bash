@@ -11,14 +11,15 @@ fi
 
 # Need to check if user exists:
 if id "$USERNAME" &>/dev/null; then
-    echo 'User $USERNAME found'
+    echo '[INFO][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME found'
 else
-    echo 'User $USERNAME not found'
+    echo '[INFO][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME not found'
     exit 1
 fi
+
 
 # Remove user from .userslist
 sudo sed -i '/$USERNAME `id -u $USERNAME/d' /shared/.userslist
 # Remove existing user
 sudo deluser --remove-home $USERNAME
-echo "User $USERNAME deleted"
+echo '[INFO][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME was deleted'
