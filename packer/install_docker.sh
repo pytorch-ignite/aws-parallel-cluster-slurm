@@ -1,6 +1,6 @@
 #!/bin/sh
 sudo apt-get update -y
-DEBIAN_FRONTEND=noninteractive sudo apt-get install -y docker.io
+sudo apt-get install -y docker.io
 sudo groupadd docker
 sudo usermod -aG docker ubuntu
 #sudo docker pull pytorchignite/base:latest

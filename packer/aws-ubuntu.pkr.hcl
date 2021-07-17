@@ -47,6 +47,6 @@ build {
   }
   provisioner "shell" {
     script = "install_nvidia.sh"
-  } 
+  }
 }
 
