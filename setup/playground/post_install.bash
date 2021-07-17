@@ -9,7 +9,7 @@ echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post.install.sh START" >&2
 if [ "${cfn_node_type}" = "MasterServer" ]; then
 
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] MasterServer: Create empty users list file: $users_filepath" >&2
-    echo "" > $users_filepath
+    touch $users_filepath
     sudo chmod 600 $users_filepath
 
 fi
