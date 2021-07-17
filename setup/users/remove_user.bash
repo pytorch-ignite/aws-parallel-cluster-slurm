@@ -10,16 +10,14 @@ else
 fi
 
 # Need to check if user exists:
-# for example list all users : cut -d: -f1 /etc/passwd
+if id "$USERNAME" &>/dev/null; then
+    echo 'User found'
+else
+    echo 'User not found'
+    exit 1
+fi
 
 # Remove existing user
-sudo userdel $USERNAME
-# echo "newuser `id -u newuser`" >> /shared/.userslist
-
-# # Create the user home and .ssh directory, set up the authorized_keys file
-# # Note this will overwrite any existing keys if used multiple times
-# mkhomedir_helper $USERNAME
-# mkdir -p /home/$USERNAME/.ssh
-# cat $KEYFILE > /home/$USERNAME/.ssh/authorized_keys
-# chmod 600 /home/$USERNAME/.ssh/authorized_keys
-# chown -R $USERNAME:users /home/$USERNAME
+sudo userdel -r $USERNAME
+# Remove user from .userslist
+sudo sed -i '$USERNAME/d' /shared/.userslist
