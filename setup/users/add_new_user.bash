@@ -14,8 +14,7 @@ else
 fi
 
 # Check if user does not exist:
-res=`cut -d : -f 1 /etc/passwd | grep $USERNAME`
-if [ -n "$res" ] ; then
+if id "$USERNAME" &>/dev/null; then
   echo "User $USERNAME exists. Please, add another user name"
   exit 1
 fi
@@ -23,10 +22,14 @@ fi
 set -e
 
 # Create new user
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Create new user: $USERNAME" >&2
 sudo useradd --create-home $USERNAME
 sudo echo "$USERNAME `id -u $USERNAME`" >> $users_filepath
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Updated users list: $(tail -1 $users_filepath)" >&2
 
 # Create .ssh directory, set up the authorized_keys file
 sudo mkdir /home/$USERNAME/.ssh
 sudo bash -c "cat $KEYFILE > /home/$USERNAME/.ssh/authorized_keys"
 sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
+
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added public key to /home/$USERNAME/.ssh/authorized_keys" >&2
