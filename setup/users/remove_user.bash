@@ -12,11 +12,18 @@ else
 fi
 
 # Need to check if user exists:
-if ! id "$USERNAME" &>/dev/null; then
+if [ ! id "$USERNAME" &>/dev/null ] ; then
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME is not found"
     exit 1
 fi
 
+echo -n "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Please, confirm to remove user: $USERNAME [Y/n]: "
+read confirm
+
+if [ ! "$confirm" == "Y" ] ; then
+  echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Canceled. Exiting ..."
+  exit 1
+fi
 
 # Remove user from users list
 sudo sed -i "/$USERNAME `id -u $USERNAME`/d" $users_filepath

@@ -3,13 +3,11 @@
 users_filepath="/shared/.userslist"
 
 # Only take action if two arguments are provided and the second is a local file
-if [ $# -eq 2 ] && [ -f "$2" ] ; then
+if [ $# -eq 1 ] ; then
   USERNAME=$1
-  KEYFILE=$2
 else
-  echo "Usage: `basename $0` <user-name> <key-file>"
+  echo "Usage: `basename $0` <user-name>"
   echo "<user-name> should be a user account"
-  echo "<key-file> should be an SSH public key file"
   exit 1
 fi
 
@@ -21,6 +19,9 @@ fi
 
 set -e
 
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Please enter the public SSH key for the user: " >&2
+read pub_key
+
 # Create new user
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Create new user: $USERNAME" >&2
 sudo useradd --create-home $USERNAME
@@ -29,7 +30,7 @@ echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Updated users list: $(tail -1 $users_
 
 # Create .ssh directory, set up the authorized_keys file
 sudo mkdir /home/$USERNAME/.ssh
-sudo bash -c "cat $KEYFILE > /home/$USERNAME/.ssh/authorized_keys"
+sudo bash -c "echo $pub_key > /home/$USERNAME/.ssh/authorized_keys"
 sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added public key to /home/$USERNAME/.ssh/authorized_keys" >&2
