@@ -93,7 +93,6 @@ User should be able to connect the cluster with SSH:
 ssh -i /path/to/ssh/private/id_rsa alice@<cluster-ip>
 ```
 
-
 ### Remove existing user
 
 3. Execute the command to remove user, e.g. `alice`:
@@ -115,7 +114,6 @@ id alice
 >
 id: ‘alice’: no such user
 ```
-
 
 
 ## Cluster usage
