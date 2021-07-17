@@ -25,6 +25,8 @@ if [ ! "$confirm" == "Y" ] ; then
   exit 1
 fi
 
+set -e
+
 # Remove user from users list
 sudo sed -i "/$USERNAME `id -u $USERNAME`/d" $users_filepath
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Removed $USERNAME from users list"

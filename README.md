@@ -59,6 +59,65 @@ chmod 600 ~/.ssh/aws-playground-cluster.pem
 pcluster create aws-deeplearning-cluster -c configs/deeplearning
 ```
 
+## User management
+
+1. Connect to the cluster as admin user (`ubuntu` by default)
+2. Clone `aws-parallel-cluster-slurm` repository:
+```bash
+git clone git@github.com:pytorch-ignite/aws-parallel-cluster-slurm.git
+cd aws-parallel-cluster-slurm
+```
+
+### Add new user
+
+3. Get SSH public key from the user
+4. Execute the command to create user, e.g. `alice`:
+```bash
+bash setup/users/add_new_user.bash alice
+>
+[INFO][2021-07-17 21:19:26] Please enter the public SSH key for the user:
+ssh-rsa AAAAB....
+[INFO][2021-07-17 21:19:34] Create new user: alice
+[INFO][2021-07-17 21:19:34] Updated users list: alice 1001
+[INFO][2021-07-17 21:19:34] Added public key to /home/alice/.ssh/authorized_keys
+```
+5. Verify
+```bash
+id alice
+>
+uid=1001(alice) gid=1001(alice) groups=1001(alice)
+```
+
+User should be able to connect the cluster with SSH:
+```
+ssh -i /path/to/ssh/private/id_rsa alice@<cluster-ip>
+```
+
+
+### Remove existing user
+
+3. Execute the command to remove user, e.g. `alice`:
+```bash
+bash setup/users/remove_user.bash alice
+>
+[INFO][2021-07-17 21:31:53] Please, confirm to remove user: alice [Y/n]: Y
+[INFO][2021-07-17 21:31:55] Removed alice from users list
+Looking for files to backup/remove ...
+Removing files ...
+Removing user `alice' ...
+Warning: group `alice' has no more members.
+Done.
+[INFO][2021-07-17 21:31:55] User alice was deleted
+```
+4. Verify
+```bash
+id alice
+>
+id: ‘alice’: no such user
+```
+
+
+
 ## Cluster usage
 
 - https://slurm.schedmd.com/man_index.html
