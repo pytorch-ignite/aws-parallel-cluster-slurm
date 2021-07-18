@@ -16,15 +16,15 @@ master_instance_type = c5.large
 base_os = ubuntu1804
 s3_read_resource = arn:aws:s3:::aws-parallel-cluster-slurm/playground*
 post_install = s3://aws-parallel-cluster-slurm/playground/post_install.bash
-vpc_settings = default
+vpc_settings = pc-vpc-pubpriv
 queue_settings = gpu-compute-spot, gpu-compute-on-demand, cpu-compute-spot
 scaling_settings = custom
 ebs_settings = shared
 
-[vpc default]
-vpc_id = vpc-069393c307f517aaa  # Use default VPC, https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html
-master_subnet_id = subnet-0fbaf34917965cede
-compute_subnet_id = subnet-0b6c2f5b8af52b61b
+[vpc pc-vpc-pubpriv]
+vpc_id = vpc-0a2f625228af902a9
+master_subnet_id = subnet-055a4a2a3d57187d3
+compute_subnet_id = subnet-0624435f202eb2e11
 use_public_ips = false
 
 [queue gpu-compute-spot]
