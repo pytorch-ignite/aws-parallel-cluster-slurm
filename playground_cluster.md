@@ -89,9 +89,9 @@ conda env list
 ```
 
 ```bash
-conda create -n -y test
+conda create -y -n test
 conda activate test
-conda install -y  pytorch cpuonly -c pytorch
+conda install -y pytorch cpuonly -c pytorch
 srun -N 2 -l conda env list
 >
 1: # conda environments:

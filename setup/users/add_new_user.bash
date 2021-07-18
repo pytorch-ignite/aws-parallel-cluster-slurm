@@ -2,7 +2,6 @@
 
 users_filepath="/shared/.userslist"
 
-# Only take action if two arguments are provided and the second is a local file
 if [ $# -eq 1 ] ; then
   USERNAME=$1
 else
