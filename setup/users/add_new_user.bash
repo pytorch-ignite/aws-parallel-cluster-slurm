@@ -25,8 +25,8 @@ read pub_key
 # Create new user
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Create new user: $USERNAME" >&2
 sudo useradd --create-home $USERNAME
-sudo echo "$USERNAME `id -u $USERNAME`" >> $users_filepath
-echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Updated users list: $(tail -1 $users_filepath)" >&2
+sudo bash -c "echo \"$USERNAME `id -u $USERNAME`\" >> $users_filepath"
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Updated users list: $(sudo tail -1 $users_filepath)" >&2
 
 # Create .ssh directory, set up the authorized_keys file
 sudo mkdir /home/$USERNAME/.ssh

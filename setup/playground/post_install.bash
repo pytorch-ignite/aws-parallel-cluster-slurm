@@ -10,8 +10,9 @@ if [ "${cfn_node_type}" = "MasterServer" ]; then
 
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] MasterServer: Create empty users list file: $users_filepath" >&2
     touch $users_filepath
-    sudo chmod 600 $users_filepath
-
+    chmod 600 $users_filepath
+    # >
+    # -rw-------  1 root root    0 Jul 18 00:13 .userslist
 fi
 
 if [ "${cfn_node_type}" = "ComputeFleet" ]; then
