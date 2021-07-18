@@ -39,7 +39,6 @@ sudo deluser --remove-home --backup-to /home/.backup/$USERNAME  $USERNAME
 BACKUP_TIME=$(date '+%Y_%m_%d-%H_%M_%S')
 OLD_BACKUP_NAME="$USERNAME.tar.bz2"
 NEW_BACKUP_NAME="${USERNAME}_$BACKUP_TIME.tar.bz2"
-echo $NEW_BACKUP_NAME
 sudo mv /home/.backup/$USERNAME/$OLD_BACKUP_NAME /home/.backup/$USERNAME/$NEW_BACKUP_NAME
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] $USERNAME backup saved to /home/.backup/$NEW_BACKUP_NAME"
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME was deleted"
