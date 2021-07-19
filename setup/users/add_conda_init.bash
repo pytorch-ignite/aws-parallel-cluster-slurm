@@ -12,13 +12,15 @@ bashrc_fp="/home/$USERNAME/.bashrc"
 
 # Check if user exists:
 if [ ! -f "$bashrc_fp" ] ; then
-  echo "User $USERNAME is not found."
+  echo "[ERROR][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME is not found." >&2
   exit 1
 fi
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Append conda initialization to $bashrc_fp for $USERNAME" >&2
 
-cat << EOF >> $bashrc_fp
+# We are using 'EOF' to prevent __conda_setup expansion etc
+cat << 'EOF' >> $bashrc_fp
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/shared/conda/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -33,4 +35,5 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
 EOF

@@ -1,5 +1,5 @@
 #!/bin/bash -e
-  
+
 users_filepath="/shared/.userslist"
 
 # Only take action if two arguments are provided and the second is a local file
@@ -13,7 +13,7 @@ fi
 
 # Need to check if user exists:
 if [ ! id "$USERNAME" &>/dev/null ] ; then
-    echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME is not found"
+    echo "[ERROR][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME is not found"
     exit 1
 fi
 
