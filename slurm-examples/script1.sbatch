@@ -3,7 +3,7 @@
 #SBATCH --output=slurm_%j.out
 #SBATCH --ntasks=1
 #SBATCH --time=00:01:00
-#SBATCH --nodelist=compute-spot-dy-t3micro-1
+#SBATCH --partition=cpu-compute-spot
 
 date;hostname;pwd
 

@@ -4,7 +4,7 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=2
 #SBATCH --time=00:05:00
-#SBATCH --nodelist=compute-spot-dy-t3micro-[1-2]
+#SBATCH --partition=cpu-compute-spot
 
 set -e
 

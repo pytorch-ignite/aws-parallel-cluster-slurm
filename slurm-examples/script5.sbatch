@@ -4,7 +4,7 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=00:05:00
-#SBATCH --partition=compute-on-demand
+#SBATCH --partition=gpu-compute-spot
 #SBATCH --exclusive
 
 set -e
