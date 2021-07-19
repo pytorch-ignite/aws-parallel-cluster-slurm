@@ -141,7 +141,7 @@ Connect to the cluster and execute:
 ```bash
 conda env list
 
-conda create -n -y test-gpu
+conda create -y -n test-gpu
 conda activate test-gpu
 conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
 ```
