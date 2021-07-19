@@ -1,5 +1,7 @@
 #!/bin/bash
 
+script_folder="`dirname $0`"
+
 if [ $# -eq 1 ] ; then
   USERNAME=$1
 else
@@ -8,16 +10,22 @@ else
   exit 1
 fi
 
-bashrc_fp="/home/$USERNAME/.bashrc"
+set -e
+
+# Set up env variables
+source $script_folder/env.bash
+
+bashrc_fp="$home_dir/$USERNAME/.bashrc"
 
 # Check if user exists:
-if [ ! -f "$bashrc_fp" ] ; then
+if ! [ -f "$bashrc_fp" ] ; then
   echo "[ERROR][$(date '+%Y-%m-%d %H:%M:%S')] User $USERNAME is not found." >&2
   exit 1
 fi
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Append conda initialization to $bashrc_fp for $USERNAME" >&2
 
+# Here conda location is hard-coded
 # We are using 'EOF' to prevent __conda_setup expansion etc
 cat << 'EOF' >> $bashrc_fp
 
