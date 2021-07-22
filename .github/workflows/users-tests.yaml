@@ -2,6 +2,8 @@
 name: Test user-related scripts
 
 on:
+  push:
+    branches: [actions]
   pull_request:
     paths: 
       - "setup/users/**"
