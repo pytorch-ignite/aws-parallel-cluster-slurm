@@ -1,16 +1,10 @@
-# This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Test user-related scripts
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+    paths: "setup/users/**"
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
@@ -19,9 +13,7 @@ jobs:
     
     runs-on: ubuntu-18.04
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Create /shared
@@ -41,26 +33,17 @@ jobs:
     
     steps: 
       
-      - name: Grant permission to add_user.sh
-        run: chmod u+x $GITHUB_WORKSPACE/setup/users/add_user.sh
-      
       - name: Add user
-        run: echo "ssh-key" | $GITHUB_WORKSPACE/setup/users/add_user.sh testuser
+        run: echo "abc" | $GITHUB_WORKSPACE/setup/users/add_new_user.bash testuser
 
       - name: Test that user was created
-        uses: skx/github-action-tester@master
-        with:
-          script: .github/test_user_exists.sh testuser
+        run: id "$USERNAME"
       
       - name: Test that the created user is in the list
-        uses: skx/github-action-tester@master
-        with:
-          script: .github/test_user_in_list.sh testuser
+        run: grep testuser users_filepath
       
       - name: Test that the created user's provided key is in authorized keys
-        uses: skx/github-action-tester@master
-        with:
-          script: .github/test_key_added.sh testuser ssh-key
+        run: grep "abc" /home/testuser/.ssh/authorized_keys
   
   test_remove_user:
     
@@ -70,19 +53,15 @@ jobs:
     
     steps: 
       
-      - name: Grant permission to remove_user.sh
-        run: chmod u+x $GITHUB_WORKSPACE/setup/users/remove_user.sh
-      
       - name: Remove user
-        run: echo "Y" | $GITHUB_WORKSPACE/setup/users/remove_user.sh testuser
+        run: echo "Y" | bash $GITHUB_WORKSPACE/setup/users/remove_user.sh testuser
 
       - name: Test that user was removed
-        uses: skx/github-action-tester@master
-        with:
-          script: .github/test_user_does_not_exist.sh testuser
+        run: [ ! id "$USERNAME" ]
       
       - name: Test that the user was removed from the list
-        uses: skx/github-action-tester@master
-        with:
-          script: .github/test_user_in_list.sh
+        run: [ ! grep testuser users_filepath]
+
+      - name: Test that backup was created
+        run: ls -1qA /shared/home/.backup/testuser/ | grep -q . 
       
