@@ -42,10 +42,10 @@ jobs:
     steps: 
       
       - name: Grant permission to add_user.sh
-        run: chmod u+x $GITHUB_WORKSPACE/setup/users/add_user.sh
+        run: chmod u+x /$GITHUB_WORKSPACE/setup/users/add_user.sh
       
       - name: Add user
-        run: echo "ssh-key" | ./$GITHUB_WORKSPACE/setup/users/add_user.sh testuser
+        run: echo "ssh-key" | /$GITHUB_WORKSPACE/setup/users/add_user.sh testuser
 
       - name: Test that user was created
         uses: skx/github-action-tester@master
@@ -71,10 +71,10 @@ jobs:
     steps: 
       
       - name: Grant permission to remove_user.sh
-        run: chmod u+x $GITHUB_WORKSPACE/setup/users/remove_user.sh
+        run: chmod u+x /$GITHUB_WORKSPACE/setup/users/remove_user.sh
       
       - name: Remove user
-        run: echo "Y" | ./$GITHUB_WORKSPACE/setup/users/remove_user.sh testuser
+        run: echo "Y" | /$GITHUB_WORKSPACE/setup/users/remove_user.sh testuser
 
       - name: Test that user was removed
         uses: skx/github-action-tester@master
