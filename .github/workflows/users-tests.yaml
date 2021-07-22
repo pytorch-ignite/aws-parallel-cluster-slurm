@@ -3,7 +3,9 @@ name: Test user-related scripts
 
 on:
   pull_request:
-    paths: "setup/users/**"
+    paths: 
+      - "setup/users/**"
+      - ".github/workflows/users-tests.yml"
 
   workflow_dispatch:
 
