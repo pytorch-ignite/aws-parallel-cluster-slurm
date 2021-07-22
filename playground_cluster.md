@@ -28,15 +28,16 @@ which sinfo
 
 sinfo
 >
-PARTITION         AVAIL  TIMELIMIT  NODES  STATE NODELIST
-compute-on-demand    up   infinite      4  idle~ compute-on-demand-dy-t3micro-[1-4]
-compute-spot*        up   infinite      4  idle~ compute-spot-dy-t3micro-[1-4]
+PARTITION             AVAIL  TIMELIMIT  NODES  STATE NODELIST
+cpu-compute-spot         up   infinite      4  idle~ cpu-compute-spot-dy-t3micro-[1-4]
+gpu-compute-on-demand    up   infinite      4  idle~ gpu-compute-on-demand-dy-g4dnxlarge-[1-4]
+gpu-compute-spot*        up   infinite      4  idle~ gpu-compute-spot-dy-g4dnxlarge-[1-4]
 
 hostname
 >
-ip-10-0-0-148
+ip-172-31-10-217
 
-srun -N 2 -n 2 -l hostname
+srun -N 2 -n 2 -l --partition=cpu-compute-spot hostname
 >
 0: compute-spot-dy-t3micro-1
 1: compute-spot-dy-t3micro-2
@@ -89,10 +90,10 @@ conda env list
 ```
 
 ```bash
-conda create -n -y test
+conda create -y -n test
 conda activate test
 conda install -y  pytorch cpuonly -c pytorch
-srun -N 2 -l conda env list
+srun -N 2 -l --partition=cpu-compute-spot conda env list
 >
 1: # conda environments:
 1: #
@@ -140,7 +141,7 @@ Connect to the cluster and execute:
 ```bash
 conda env list
 
-conda create -n -y test-gpu
+conda create -y -n test-gpu
 conda activate test-gpu
 conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
 ```
@@ -157,6 +158,6 @@ squeue
 
 #### Remove existing cluster
 
-```
+```bash
 pcluster delete -c configs/playground aws-playground-cluster
 ```

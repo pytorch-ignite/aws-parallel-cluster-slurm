@@ -16,24 +16,23 @@ master_instance_type = c5.large
 base_os = ubuntu1804
 s3_read_resource = arn:aws:s3:::aws-parallel-cluster-slurm/playground*
 post_install = s3://aws-parallel-cluster-slurm/playground/post_install.bash
-vpc_settings = default
-queue_settings = gpu-compute-spot, gpu-compute-on-demand, cpu-compute-spot
+vpc_settings = pc-vpc-pubpriv
+queue_settings = cpu-compute-ondemand, cpu-compute-spot, gpu-compute-ondemand, gpu-compute-spot
 scaling_settings = custom
 ebs_settings = shared
 
-[vpc default]
-vpc_id = vpc-069393c307f517aaa  # Use default VPC, https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html
-master_subnet_id = subnet-0fbaf34917965cede
-compute_subnet_id = subnet-0b6c2f5b8af52b61b
+[vpc pc-vpc-pubpriv]
+vpc_id = vpc-0a2f625228af902a9
+master_subnet_id = subnet-055a4a2a3d57187d3
+compute_subnet_id = subnet-0624435f202eb2e11
 use_public_ips = false
 
-[queue gpu-compute-spot]
+[queue cpu-compute-ondemand]
 enable_efa = false
 enable_efa_gdr = false
-compute_type = spot
-compute_resource_settings = gpu-t4x1-spot
+compute_type = ondemand
+compute_resource_settings = cpu-ondemand
 disable_hyperthreading = true
-placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
 [queue cpu-compute-spot]
 enable_efa = false
@@ -41,35 +40,44 @@ enable_efa_gdr = false
 compute_type = spot
 compute_resource_settings = cpu-spot
 disable_hyperthreading = true
-placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
-[queue gpu-compute-on-demand]
+[queue gpu-compute-ondemand]
 enable_efa = false
 enable_efa_gdr = false
 compute_type = ondemand
-compute_resource_settings = gpu-t4x1-on-demand
+compute_resource_settings = gpu-t4x1-ondemand
 disable_hyperthreading = true
-placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
+# placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
-[compute_resource gpu-t4x1-spot]
-initial_count = 0
-instance_type = g4dn.xlarge
-max_count = 4
+[queue gpu-compute-spot]
+enable_efa = false
+enable_efa_gdr = false
+compute_type = spot
+compute_resource_settings = gpu-t4x1-spot
+disable_hyperthreading = true
+# placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
-[compute_resource gpu-m60x2-spot]
+[compute_resource cpu-ondemand]
 initial_count = 0
-instance_type = g3.8xlarge
+instance_type = t3.micro
 max_count = 4
 
 [compute_resource cpu-spot]
 initial_count = 0
 instance_type = t3.micro
 max_count = 4
+spot_price = 0.0031
 
-[compute_resource gpu-t4x1-on-demand]
+[compute_resource gpu-t4x1-ondemand]
 initial_count = 0
 instance_type = g4dn.xlarge
 max_count = 4
+
+[compute_resource gpu-t4x1-spot]
+initial_count = 0
+instance_type = g4dn.xlarge
+max_count = 4
+spot_price = 0.1578
 
 [scaling custom]
 scaledown_idletime = 6

@@ -39,6 +39,72 @@ aws ec2 create-key-pair --key-name playground-cluster --output text > ~/.ssh/aws
 chmod 600 ~/.ssh/aws-playground-cluster.pem
 ```
 
+4. Create VPC with "Head node in a public subnet and compute fleet in a private subnet"
+
+<details>
+<summary>
+Click for details
+</summary>
+
+In the command line, run `pcluster configure` to create VPC:
+```bash
+pcluster configure
+>
+INFO: Configuration file /Users/user/.parallelcluster/config will be written.
+Press CTRL-C to interrupt the procedure.
+
+
+Allowed values for AWS Region ID:
+...
+AWS Region ID [us-east-2]: 14
+Allowed values for EC2 Key Pair Name:
+...
+EC2 Key Pair Name [playground-cluster]: 1
+Allowed values for Scheduler:
+1. sge
+2. torque
+3. slurm
+4. awsbatch
+Scheduler [slurm]: 3
+Allowed values for Operating System:
+1. alinux2
+2. centos7
+3. centos8
+4. ubuntu1804
+5. ubuntu2004
+Operating System [alinux2]: 4
+Minimum cluster size (instances) [0]: 0
+Maximum cluster size (instances) [10]: 2
+Head node instance type [t2.micro]:
+Compute instance type [t2.micro]:
+Automate VPC creation? (y/n) [n]: y
+Allowed values for Network Configuration:
+1. Head node in a public subnet and compute fleet in a private subnet
+2. Head node and compute fleet in the same public subnet
+Network Configuration [Head node in a public subnet and compute fleet in a private subnet]: 1
+Beginning VPC creation. Please do not leave the terminal until the creation is finalized
+Creating CloudFormation stack...
+Do not leave the terminal until the process has finished
+Stack Name: parallelclusternetworking-pubpriv-20210718212635
+Status: NatRoutePrivate - CREATE_IN_PROGRESS
+The stack has been created
+Configuration file written to /Users/user/.parallelcluster/config
+```
+
+Get public and private subnets from created config file:
+```bash
+cat /Users/user/.parallelcluster/config | grep subnet
+>
+master_subnet_id = subnet-055a4a2a3d57187d3
+compute_subnet_id = subnet-0624435f202eb2e11
+```
+
+Remove create configuration:
+```bash
+rm -R /Users/user/.parallelcluster
+```
+</details>
+
 
 ### Configure AWS ParallelCluster
 - https://docs.aws.amazon.com/parallelcluster/latest/ug/configuration.html
@@ -63,6 +129,10 @@ pcluster create aws-deeplearning-cluster -c configs/deeplearning
 
 1. Connect to the cluster as admin user (`ubuntu` by default)
 2. Clone `aws-parallel-cluster-slurm` repository:
+
+2.1 To enable access to the repository, add `id_rsa.pub` to project's deploy keys: https://github.com/pytorch-ignite/aws-parallel-cluster-slurm/settings/keys
+
+2.2 Get the repository
 ```bash
 git clone git@github.com:pytorch-ignite/aws-parallel-cluster-slurm.git
 cd aws-parallel-cluster-slurm
