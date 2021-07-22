@@ -1,0 +1,63 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  
+  build:
+    
+    runs-on: ubuntu-18.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Create /shared
+        run: sudo mkdir /shared
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
+  test_add_user:
+    
+    needs: build
+    
+    runs-on: ubuntu-18.04
+    
+    steps: 
+      
+      - name: Grant permission to add_user.sh
+        run: chmod u+x $GITHUB_WORKSPACE/setup/users/add_user.sh
+      
+      - name: Add user
+        run: echo "ssh-key" | ./$GITHUB_WORKSPACE/setup/users/add_user.sh testuser
+
+      - name: Test that user was created
+        uses: skx/github-action-tester@master
+        with:
+          script: .github/test_user_exists.sh testuser
+      
+      - name: Test that the created user is in the list
+        uses: skx/github-action-tester@master
+        with:
+          script: .github/test_user_in_list.sh
+      
+      - name: Test that the created user's provided key is in authorized keys
+        uses: skx/github-action-tester@master
+        with:
+          script: .github/test_key_added.sh
+      
