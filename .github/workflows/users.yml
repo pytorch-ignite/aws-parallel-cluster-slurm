@@ -32,7 +32,8 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-  test_add_user:
+
+  test_add_new_user:
     
     needs: build
     
@@ -54,10 +55,34 @@ jobs:
       - name: Test that the created user is in the list
         uses: skx/github-action-tester@master
         with:
-          script: .github/test_user_in_list.sh
+          script: .github/test_user_in_list.sh testuser
       
       - name: Test that the created user's provided key is in authorized keys
         uses: skx/github-action-tester@master
         with:
-          script: .github/test_key_added.sh
+          script: .github/test_key_added.sh testuser ssh-key
+  
+  test_remove_user:
+    
+    needs: test_add_new_user
+    
+    runs-on: ubuntu-18.04
+    
+    steps: 
+      
+      - name: Grant permission to remove_user.sh
+        run: chmod u+x $GITHUB_WORKSPACE/setup/users/remove_user.sh
+      
+      - name: Remove user
+        run: echo "Y" | ./$GITHUB_WORKSPACE/setup/users/remove_user.sh testuser
+
+      - name: Test that user was removed
+        uses: skx/github-action-tester@master
+        with:
+          script: .github/test_user_does_not_exist.sh testuser
+      
+      - name: Test that the user was removed from the list
+        uses: skx/github-action-tester@master
+        with:
+          script: .github/test_user_in_list.sh
       
