@@ -1,4 +1,5 @@
 
+
 name: Test user-related scripts
 
 on:
@@ -7,13 +8,13 @@ on:
   pull_request:
     paths: 
       - "setup/users/**"
-      - ".github/workflows/users-tests.yml"
+      - ".github/workflows/users-tests.yaml"
 
   workflow_dispatch:
 
 jobs:
   
-  build:
+  tests:
     
     runs-on: ubuntu-18.04
 
@@ -23,49 +24,20 @@ jobs:
       - name: Create /shared
         run: sudo mkdir /shared
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Test add_new_user.bash
+        run: | 
+          echo "abc" | sudo bash $GITHUB_WORKSPACE/setup/users/add_new_user.bash testuser
+          id testuser
+          grep testuser /shared/.userslist
+          sudo grep "abc" /shared/home/testuser/.ssh/authorized_keys
+      
+      - name: Test remove_user.bash
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-
-  test_add_new_user:
-    
-    needs: build
-    
-    runs-on: ubuntu-18.04
-    
-    steps: 
-      
-      - name: Add user
-        run: echo "abc" | $GITHUB_WORKSPACE/setup/users/add_new_user.bash testuser
-
-      - name: Test that user was created
-        run: id "$USERNAME"
-      
-      - name: Test that the created user is in the list
-        run: grep testuser users_filepath
-      
-      - name: Test that the created user's provided key is in authorized keys
-        run: grep "abc" /home/testuser/.ssh/authorized_keys
-  
-  test_remove_user:
-    
-    needs: test_add_new_user
-    
-    runs-on: ubuntu-18.04
-    
-    steps: 
-      
-      - name: Remove user
-        run: echo "Y" | bash $GITHUB_WORKSPACE/setup/users/remove_user.sh testuser
-
-      - name: Test that user was removed
-        run: [ ! id "$USERNAME" ]
-      
-      - name: Test that the user was removed from the list
-        run: [ ! grep testuser users_filepath]
-
-      - name: Test that backup was created
-        run: ls -1qA /shared/home/.backup/testuser/ | grep -q . 
-      
+          echo "Y" | sudo bash $GITHUB_WORKSPACE/setup/users/remove_user.bash testuser
+          if id testuser &>/dev/null ; then
+            exit 1
+          fi
+          if grep testuser /shared/.userslist &>/dev/null ; then
+            exit 1
+          fi
+          sudo ls -1qA /shared/home/.backup/testuser/ | grep -q . 
