@@ -1,16 +1,14 @@
-
-
 name: Test user-related scripts
 
 on:
   push:
-    branches: [ actions ]
+    paths: 
+      - "setup/users/**"
+      - ".github/workflows/users-tests.yaml"
   pull_request:
     paths: 
       - "setup/users/**"
       - ".github/workflows/users-tests.yaml"
-
-  workflow_dispatch:
 
 jobs:
   
@@ -24,20 +22,21 @@ jobs:
       - name: Create /shared
         run: sudo mkdir /shared
 
-      - name: Test add_new_user.bash
+      - name: Add user
         run: | 
-          echo "abc" | sudo bash $GITHUB_WORKSPACE/setup/users/add_new_user.bash testuser
+          echo "abc" | sudo bash ./setup/users/add_new_user.bash testuser
           id testuser
           grep testuser /shared/.userslist
           sudo grep "abc" /shared/home/testuser/.ssh/authorized_keys
       
-      - name: Test remove_user.bash
+      - name: Remove user
         run: |
-          echo "Y" | sudo bash $GITHUB_WORKSPACE/setup/users/remove_user.bash testuser
+          echo "Y" | sudo bash ./setup/users/remove_user.bash testuser
           if id testuser &>/dev/null ; then
             exit 1
           fi
           if grep testuser /shared/.userslist &>/dev/null ; then
             exit 1
           fi
-          sudo ls -1qA /shared/home/.backup/testuser/ | grep -q . 
+
+          sudo ls -1qA /shared/home/.backup/testuser/ | grep -q .
