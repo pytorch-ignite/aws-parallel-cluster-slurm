@@ -1,4 +1,4 @@
-name: Test user-related scripts
+name: Test packer-related scripts
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
           sudo docker exec -u root ubuntu_bash apt-get update
           sudo docker exec -u root ubuntu_bash apt-get -y install sudo
           sudo docker exec ubuntu_bash /bin/bash install_docker.sh
-          docker --version
+          sudo docker exec ubuntu_bash docker --version
       
       - name: Install Nvidia
         run: |
