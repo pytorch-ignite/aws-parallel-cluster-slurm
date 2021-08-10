@@ -2,7 +2,7 @@
 
 # Install Docker
 sudo apt-get update -y
-sudo apt-get install -y docker.io
+sudo apt-get --no-install-recommends install -y docker.io
 
 # Adding using Docker without sudo 
 sudo groupadd docker
