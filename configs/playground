@@ -20,6 +20,7 @@ vpc_settings = pc-vpc-pubpriv
 queue_settings = cpu-compute-ondemand, cpu-compute-spot, gpu-compute-ondemand, gpu-compute-spot
 scaling_settings = custom
 ebs_settings = shared
+custom_ami = ami-0175b037efb8001ad
 
 [vpc pc-vpc-pubpriv]
 vpc_id = vpc-0a2f625228af902a9
