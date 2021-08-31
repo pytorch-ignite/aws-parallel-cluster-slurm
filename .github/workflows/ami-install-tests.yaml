@@ -1,0 +1,32 @@
+name: Test packer-related scripts
+
+on:
+  push:
+    paths: 
+      - "packer/**"
+      - ".github/workflows/ami-install-tests.yaml"
+  pull_request:
+    paths: 
+      - "packer/**"
+      - ".github/workflows/ami-install-tests.yaml"
+
+jobs:
+  
+  tests:
+    
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Docker
+        run: |
+          sudo docker run -d -t --name ubuntu_bash -v $PWD/packer:/packer -w /packer ubuntu:18.04
+          sudo docker exec -u root ubuntu_bash apt-get update
+          sudo docker exec -u root ubuntu_bash apt-get -y install sudo
+          sudo docker exec ubuntu_bash /bin/bash install_docker.sh
+          sudo docker exec ubuntu_bash docker --version
+      
+      - name: Install Nvidia
+        run: |
+          sudo bash ./packer/install_nvidia.sh
