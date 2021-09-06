@@ -2,12 +2,8 @@ name: Build AMI with packer
 
 on:
   push:
-    # branches:
-    #   - master
-    paths:
-      - "packer/aws-ubuntu.pkr.hcl"
-  # TO REMOVE ONCE TESTED
-  pull_request:
+    branches:
+      - master
     paths:
       - "packer/aws-ubuntu.pkr.hcl"
 
