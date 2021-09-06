@@ -1,10 +1,6 @@
 name: Test packer-related scripts
 
 on:
-  push:
-    paths:
-      - "packer/**"
-      - ".github/workflows/ami-install-tests.yaml"
   pull_request:
     paths:
       - "packer/**"
