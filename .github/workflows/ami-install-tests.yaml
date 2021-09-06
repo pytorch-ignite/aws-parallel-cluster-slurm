@@ -2,20 +2,18 @@ name: Test packer-related scripts
 
 on:
   push:
-    paths: 
+    paths:
       - "packer/**"
       - ".github/workflows/ami-install-tests.yaml"
   pull_request:
-    paths: 
+    paths:
       - "packer/**"
       - ".github/workflows/ami-install-tests.yaml"
 
 jobs:
-  
-  tests:
-    
-    runs-on: ubuntu-18.04
 
+  tests:
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
 
@@ -26,7 +24,25 @@ jobs:
           sudo docker exec -u root ubuntu_bash apt-get -y install sudo
           sudo docker exec ubuntu_bash /bin/bash install_docker.sh
           sudo docker exec ubuntu_bash docker --version
-      
+
       - name: Install Nvidia
         run: |
           sudo bash ./packer/install_nvidia.sh
+
+  validate-ami:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install packer
+        run: |
+          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+          sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+          sudo apt-get update && sudo apt-get install packer
+
+      - name: Run packer
+        run: |
+          cd ./packer
+          packer init .
+          packer fmt .
+          packer validate .
