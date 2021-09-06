@@ -30,7 +30,7 @@ source "amazon-ebs" "ubuntu" {
   }
   source_ami_filter {
     filters = {
-      image-id = "ami-00c145829972fe4f8"
+      image-id = "ami-09b55f7d8195e33af"
     }
     most_recent = true
     owners      = ["247102896272"]
