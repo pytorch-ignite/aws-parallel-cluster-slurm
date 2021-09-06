@@ -9,12 +9,12 @@ packer {
 
 variable "ami_prefix" {
   type    = string
-  default = "PyTorch-Ignite-ParallelCluster"
+  default = "ubuntu-pcluster-cuda-docker"
 }
 
 variable "ami_version" {
   type    = string
-  default = "1.9.0-0.4.5"
+  default = "0.1.0"
 }
 
 
