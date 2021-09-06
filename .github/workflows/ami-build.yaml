@@ -6,6 +6,11 @@ on:
     #   - master
     paths:
       - "packer/aws-ubuntu.pkr.hcl"
+  # TO REMOVE ONCE TESTED
+  pull_request:
+    paths:
+      - "packer/aws-ubuntu.pkr.hcl"
+
 
 jobs:
 
