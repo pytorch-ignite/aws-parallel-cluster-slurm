@@ -2,6 +2,8 @@ name: Build AMI with packer
 
 on:
   push:
+    # branches:
+    #   - master
     paths:
       - "packer/aws-ubuntu.pkr.hcl"
 
