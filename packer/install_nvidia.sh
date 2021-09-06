@@ -6,7 +6,7 @@ sudo apt autoremove
 
 # Install Nvidia drivers
 sudo apt-get update -y
-echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list > /dev/null
+echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64 /" | sudo tee /etc/apt/sources.list.d/cuda.list > /dev/null
 sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
 sudo apt-get install -y --no-install-recommends nvidia-driver-460
 

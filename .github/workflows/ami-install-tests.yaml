@@ -13,13 +13,13 @@ on:
 jobs:
 
   tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
 
       - name: Install Docker
         run: |
-          sudo docker run -d -t --name ubuntu_bash -v $PWD/packer:/packer -w /packer ubuntu:18.04
+          sudo docker run -d -t --name ubuntu_bash -v $PWD/packer:/packer -w /packer ubuntu:20.04
           sudo docker exec -u root ubuntu_bash apt-get update
           sudo docker exec -u root ubuntu_bash apt-get -y install sudo
           sudo docker exec ubuntu_bash /bin/bash install_docker.sh

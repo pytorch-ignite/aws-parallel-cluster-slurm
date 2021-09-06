@@ -14,7 +14,7 @@ variable "ami_prefix" {
 
 variable "ami_version" {
   type    = string
-  default = "0.1.0"
+  default = "0.2.0"
 }
 
 
@@ -25,12 +25,12 @@ source "amazon-ebs" "ubuntu" {
   region        = "us-east-2"
   launch_block_device_mappings {
     device_name           = "/dev/sda1"
-    volume_size           = 30
+    volume_size           = 40
     delete_on_termination = true
   }
   source_ami_filter {
     filters = {
-      image-id = "ami-00c145829972fe4f8"
+      image-id = "ami-09b55f7d8195e33af"
     }
     most_recent = true
     owners      = ["247102896272"]
