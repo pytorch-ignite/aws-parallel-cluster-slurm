@@ -14,7 +14,7 @@ variable "ami_prefix" {
 
 variable "ami_version" {
   type    = string
-  default = "0.2.0"
+  default = "0.2.1"
 }
 
 
@@ -29,7 +29,10 @@ source "amazon-ebs" "ubuntu" {
     delete_on_termination = true
   }
   source_ami_filter {
+    # https://github.com/aws/aws-parallelcluster/blob/v2.11.2/amis.txt#L127
+    # or https://us-east-2.console.aws.amazon.com/ec2/v2/home?region=us-east-2#Images:visibility=public-images;platform=ubuntu;ownerAlias=247102896272;creationDate=%3E2021-06-01T00:00+02:00;sort=name
     filters = {
+      # aws-parallelcluster-2.11.2-ubuntu-2004-lts-hvm-x86_64-202108251000
       image-id = "ami-09b55f7d8195e33af"
     }
     most_recent = true
