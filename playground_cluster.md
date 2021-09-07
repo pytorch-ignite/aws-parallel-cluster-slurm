@@ -5,12 +5,19 @@
 aws s3 cp setup/playground/post_install.bash s3://aws-parallel-cluster-slurm/playground/post_install.bash
 ```
 
+- https://s3.console.aws.amazon.com/s3/buckets/aws-parallel-cluster-slurm?region=us-east-2
+
 1. Create cluster:
 
 ```bash
 pcluster create aws-playground-cluster -c configs/playground
 
-pcluster status -c configs/playground aws-playground-cluster
+pcluster status aws-playground-cluster -c configs/playground
+```
+
+If cluster creation is failed, try with "no rollback" option:
+```bash
+pcluster create aws-playground-cluster -c configs/playground --norollback
 ```
 
 1.1 Check connection to the head node
@@ -117,20 +124,24 @@ sbatch script1.sbatch
 squeue
 ```
 
+#### Cluster AWS dashboard
+
+- https://us-east-2.console.aws.amazon.com/cloudwatch/home?region=us-east-2#dashboards:name=parallelcluster-aws-playground-cluster-us-east-2
+
 #### Update cluster
 
 To modify configuration and apply it to the existing cluster:
 
 ```bash
-pcluster stop -c configs/playground aws-playground-cluster
+pcluster stop aws-playground-cluster -c configs/playground
 
-pcluster update -c configs/playground aws-playground-cluster
+pcluster update aws-playground-cluster -c configs/playground
 
 ...
 
-pcluster start -c configs/playground aws-playground-cluster
+pcluster start aws-playground-cluster -c configs/playground
 
-pcluster status -c configs/playground aws-playground-cluster
+pcluster status aws-playground-cluster -c configs/playground
 ```
 
 #### GPU examples
@@ -155,9 +166,24 @@ sbatch script5.sbatch
 squeue
 ```
 
+#### Using Docker containers
+
+1. Check docker
+Connect to the cluster and execute:
+```bash
+docker images
+
+conda create -y -n test-gpu
+conda activate test-gpu
+conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
+```
+
+
+2. Submit CPU job using docker container
+
 
 #### Remove existing cluster
 
 ```bash
-pcluster delete -c configs/playground aws-playground-cluster
+pcluster delete aws-playground-cluster -c configs/playground
 ```
