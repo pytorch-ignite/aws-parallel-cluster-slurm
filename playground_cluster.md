@@ -19,6 +19,10 @@ If cluster creation is failed, try with "no rollback" option:
 ```bash
 pcluster create aws-playground-cluster -c configs/playground --norollback
 ```
+Then you can use ssh to connect to the head node and check `/var/log/chef-client.log`,
+which should confirm where the creation is stuck on or `/var/log/parallelcluster/clustermgtd`
+that contains the reason why capacity cannot be provisioned"
+
 
 1.1 Check connection to the head node
 ```bash
@@ -172,15 +176,14 @@ squeue
 Connect to the cluster and execute:
 ```bash
 docker images
-
-conda create -y -n test-gpu
-conda activate test-gpu
-conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
 ```
 
+TODO ...
 
 2. Submit CPU job using docker container
 
+
+TODO ...
 
 #### Remove existing cluster
 
