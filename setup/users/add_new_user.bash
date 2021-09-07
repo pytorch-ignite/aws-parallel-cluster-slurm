@@ -45,14 +45,12 @@ echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added public key to $home_dir/$USERNA
 sudo usermod --shell /bin/bash $USERNAME
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Set bash as default shell" >&2
 
-conda_path=`true | which conda`
-if [ -f "$conda_path" ] ; then
+if conda --version &> /dev/null; then
     sudo bash $script_folder/add_conda_init.bash $USERNAME
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added conda initialization to .bashrc" >&2
 fi
 
-docker_path=`true | which docker`
-if [ -f "$docker_path" ] ; then
+if docker --version &> /dev/null; then
     sudo usermod -aG docker $USERNAME
-    echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added user to docker group" >&2
+    echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added user to docker group: $(cat /etc/group | grep docker)" >&2
 fi
