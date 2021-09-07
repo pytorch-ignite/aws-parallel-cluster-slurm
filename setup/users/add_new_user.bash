@@ -51,3 +51,8 @@ if [ -f "$conda_path" ] ; then
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added conda initialization to .bashrc" >&2
 fi
 
+docker_path=`true | which docker`
+if [ -f "$docker_path" ] ; then
+    sudo usermod -aG docker $USERNAME
+    echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added user to docker group" >&2
+fi
