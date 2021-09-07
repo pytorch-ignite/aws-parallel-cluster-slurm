@@ -29,8 +29,10 @@ source "amazon-ebs" "ubuntu" {
     delete_on_termination = true
   }
   source_ami_filter {
+    # https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#Images:visibility=public-images;platform=ubuntu;ownerAlias=247102896272;creationDate=%3E2021-06-01T00:00+02:00;sort=name
     filters = {
-      image-id = "ami-09b55f7d8195e33af"
+      # aws-parallelcluster-2.11.2-ubuntu-2004-lts-hvm-x86_64-202108251000
+      image-id = "ami-094f72c711db030be"
     }
     most_recent = true
     owners      = ["247102896272"]
