@@ -13,13 +13,17 @@ ssh = ssh {CFN_USER}@{MASTER_IP} {ARGS}
 key_name = playground-cluster
 scheduler = slurm
 master_instance_type = c5.large
-base_os = ubuntu1804
+base_os = ubuntu2004
 s3_read_resource = arn:aws:s3:::aws-parallel-cluster-slurm/playground*
 post_install = s3://aws-parallel-cluster-slurm/playground/post_install.bash
 vpc_settings = pc-vpc-pubpriv
 queue_settings = cpu-compute-ondemand, cpu-compute-spot, gpu-compute-ondemand, gpu-compute-spot
 scaling_settings = custom
 ebs_settings = shared
+custom_ami = ami-0c13b9775226d5c5f  # our AMI: ubuntu-pcluster-cuda-docker-0.2.1 builded with packer/aws-ubuntu.pkr.hcl
+# Our AMI requires 40GB
+master_root_volume_size = 40
+compute_root_volume_size = 40
 
 [vpc pc-vpc-pubpriv]
 vpc_id = vpc-0a2f625228af902a9
@@ -45,7 +49,7 @@ disable_hyperthreading = true
 enable_efa = false
 enable_efa_gdr = false
 compute_type = ondemand
-compute_resource_settings = gpu-t4x1-ondemand
+compute_resource_settings = gpu-t4x1-ondemand, gpu-t4x4-ondemand
 disable_hyperthreading = true
 # placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
@@ -53,7 +57,7 @@ disable_hyperthreading = true
 enable_efa = false
 enable_efa_gdr = false
 compute_type = spot
-compute_resource_settings = gpu-t4x1-spot
+compute_resource_settings = gpu-t4x1-spot, gpu-t4x4-spot
 disable_hyperthreading = true
 # placement_group = DYNAMIC  # https://docs.aws.amazon.com/parallelcluster/latest/ug/queue-section.html#queue-placement-group
 
@@ -73,14 +77,25 @@ initial_count = 0
 instance_type = g4dn.xlarge
 max_count = 4
 
+[compute_resource gpu-t4x4-ondemand]
+initial_count = 0
+instance_type = g4dn.12xlarge
+max_count = 4
+
 [compute_resource gpu-t4x1-spot]
 initial_count = 0
 instance_type = g4dn.xlarge
 max_count = 4
-spot_price = 0.1578
+spot_price = 0.16
+
+[compute_resource gpu-t4x4-spot]
+initial_count = 0
+instance_type = g4dn.12xlarge
+max_count = 4
+spot_price = 1.2
 
 [scaling custom]
-scaledown_idletime = 6
+scaledown_idletime = 10
 
 [ebs shared]
 shared_dir = /shared

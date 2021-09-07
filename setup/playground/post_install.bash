@@ -4,7 +4,7 @@
 
 users_filepath="/shared/.userslist"
 
-echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post.install.sh START" >&2
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash START" >&2
 
 if [ "${cfn_node_type}" = "MasterServer" ]; then
 
@@ -29,4 +29,4 @@ if [ "${cfn_node_type}" = "ComputeFleet" ]; then
 
 fi
 
-echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post.install.sh: STOP" >&2
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: STOP" >&2

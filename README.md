@@ -119,12 +119,6 @@ rm -R /Users/user/.parallelcluster
 
 - [Testing cluster](playground_cluster.md)
 
-#### Deep-Learning cluster
-
-```bash
-pcluster create aws-deeplearning-cluster -c configs/deeplearning
-```
-
 ## User management
 
 1. Connect to the cluster as admin user (`ubuntu` by default)
