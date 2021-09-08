@@ -2,18 +2,18 @@ name: Test user-related scripts
 
 on:
   push:
-    paths: 
+    paths:
       - "setup/users/**"
       - ".github/workflows/users-tests.yaml"
   pull_request:
-    paths: 
+    paths:
       - "setup/users/**"
       - ".github/workflows/users-tests.yaml"
 
 jobs:
-  
+
   tests:
-    
+
     runs-on: ubuntu-18.04
 
     steps:
@@ -23,12 +23,13 @@ jobs:
         run: sudo mkdir /shared
 
       - name: Add user
-        run: | 
+        run: |
           echo "abc" | sudo bash ./setup/users/add_new_user.bash testuser
           id testuser
           grep testuser /shared/.userslist
           sudo grep "abc" /shared/home/testuser/.ssh/authorized_keys
-      
+          cat /etc/group | grep docker | grep testuser
+
       - name: Remove user
         run: |
           echo "Y" | sudo bash ./setup/users/remove_user.bash testuser
@@ -36,6 +37,9 @@ jobs:
             exit 1
           fi
           if grep testuser /shared/.userslist &>/dev/null ; then
+            exit 1
+          fi
+          if cat /etc/group | grep docker | grep testuser &>/dev/null ; then
             exit 1
           fi
 
