@@ -197,3 +197,4 @@ id: ‘alice’: no such user
 - https://github.com/aws-samples/no-tears-cluster/blob/release/USER_GUIDE.md
 - https://github.com/aws-samples/1click-hpc/tree/main/docs
 - https://www.hpcworkshops.com/01-hpc-overview.html
+- https://jiaweizhuang.github.io/blog/aws-hpc-guide/#install-hpc-software-stack-with-spack
