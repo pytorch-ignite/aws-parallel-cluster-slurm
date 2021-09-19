@@ -14,7 +14,7 @@ variable "ami_prefix" {
 
 variable "ami_version" {
   type    = string
-  default = "0.2.1"
+  default = "0.3.0"
 }
 
 
@@ -50,6 +50,9 @@ build {
   }
   provisioner "shell" {
     script = "install_nvidia.sh"
+  }
+  provisioner "shell" {
+    script = "install_pyxis.sh"
   }
 }
 
