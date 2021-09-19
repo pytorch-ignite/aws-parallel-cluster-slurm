@@ -49,8 +49,3 @@ if conda --version &> /dev/null; then
     sudo bash $script_folder/add_conda_init.bash $USERNAME
     echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added conda initialization to .bashrc" >&2
 fi
-
-if docker --version &> /dev/null; then
-    sudo usermod -aG docker $USERNAME
-    echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Added user to docker group: $(cat /etc/group | grep docker)" >&2
-fi

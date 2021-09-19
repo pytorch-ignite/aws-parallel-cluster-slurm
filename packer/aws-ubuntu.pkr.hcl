@@ -9,12 +9,12 @@ packer {
 
 variable "ami_prefix" {
   type    = string
-  default = "ubuntu-pcluster-cuda-docker"
+  default = "ubuntu-pcluster-cuda-enroot-pyxis"
 }
 
 variable "ami_version" {
   type    = string
-  default = "0.2.1"
+  default = "0.3.0"
 }
 
 
@@ -46,10 +46,14 @@ build {
     "source.amazon-ebs.ubuntu"
   ]
   provisioner "shell" {
-    script = "install_docker.sh"
+    script = "install_nvidia.sh"
+  }
+  provisioner "file" {
+    source = "enroot.conf"
+    destination = "/tmp/enroot.conf"
   }
   provisioner "shell" {
-    script = "install_nvidia.sh"
+    script = "install_pyxis.bash"
   }
 }
 
