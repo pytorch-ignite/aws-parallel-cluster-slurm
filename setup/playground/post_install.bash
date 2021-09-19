@@ -40,20 +40,14 @@ if [ "${cfn_node_type}" = "MasterServer" ]; then
     sudo chmod 1777 /shared/enroot_data
     sudo mkdir /shared/enroot_cache
     sudo chmod 1777 /shared/enroot_cache
-    sudo mkdir /shared/enroot_sqsh
-    sudo chmod 1777 /shared/enroot_sqsh
+    sudo mkdir /shared/enroot_runtime
+    sudo chmod 1777 /shared/enroot_runtime
 fi
-sudo mkdir /tmp/enroot
-sudo chmod 1777 /tmp/enroot
+
 sudo touch /opt/slurm/etc/plugstack.conf
 sudo bash -c "echo 'required /usr/local/lib/slurm/spank_pyxis.so runtime_path=/tmp/pyxis' > /opt/slurm/etc/plugstack.conf"
-sudo sed -i 's!#ENROOT_RUNTIME_PATH        ${XDG_RUNTIME_DIR}/enroot!ENROOT_RUNTIME_PATH        /tmp/enroot/${UID}!g' /usr/local/etc/enroot/enroot.conf
-sudo sed -i 's!#ENROOT_DATA_PATH           ${XDG_DATA_HOME}/enroot!ENROOT_DATA_PATH        /shared/enroot_data/\${UID}!g' /usr/local/etc/enroot/enroot.conf
+sudo sed -i 's!#ENROOT_RUNTIME_PATH        ${XDG_RUNTIME_DIR}/enroot!ENROOT_RUNTIME_PATH        /shared/enroot_runtime/${UID}!g' /usr/local/etc/enroot/enroot.conf
+sudo sed -i 's!#ENROOT_DATA_PATH           ${XDG_DATA_HOME}/enroot!ENROOT_DATA_PATH        /shared/enroot_data/${UID}!g' /usr/local/etc/enroot/enroot.conf
 sudo sed -i 's!#ENROOT_CACHE_PATH          ${XDG_CACHE_HOME}/enroot!ENROOT_CACHE_PATH        /shared/enroot_cache/${UID}!g' /usr/local/etc/enroot/enroot.conf
-
-echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Downloading .sqsh images" >&2
-if [ "${cfn_node_type}" = "MasterServer" ]; then
-    enroot import --output /shared/enroot_sqsh/ignite-apex-vision.sqsh docker://pytorchignite/apex-vision:latest
-fi
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: STOP" >&2
