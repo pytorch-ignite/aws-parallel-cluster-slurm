@@ -20,7 +20,7 @@ jobs:
       - name: Install Enroot
         run: |
           sudo bash ./packer/install_pyxis.bash
-          enroot version
+          ENROOT_RUNTIME_DIR=$HOME/enroot-runtime enroot version
 
       - name: Install Nvidia
         run: |
