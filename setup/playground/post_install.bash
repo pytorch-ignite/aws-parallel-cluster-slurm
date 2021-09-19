@@ -4,7 +4,6 @@
 
 users_filepath="/shared/.userslist"
 
-
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash START" >&2
 
 if [ "${cfn_node_type}" = "MasterServer" ]; then
@@ -31,7 +30,7 @@ if [ "${cfn_node_type}" = "ComputeFleet" ]; then
 fi
 
 
-#Install enroot
+#Enroot configuration
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Creating enroot directories" >&2
 if [ "${cfn_node_type}" = "MasterServer" ]; then
     sudo mkdir /shared/enroot_data
