@@ -14,8 +14,6 @@ if [ "${cfn_node_type}" = "MasterServer" ]; then
     chmod 600 $users_filepath
     # >
     # -rw-------  1 root root    0 Jul 18 00:13 .userslist
-
-    # Create storage for docker images
 fi
 
 if [ "${cfn_node_type}" = "ComputeFleet" ]; then

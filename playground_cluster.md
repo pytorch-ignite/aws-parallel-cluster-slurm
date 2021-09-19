@@ -23,6 +23,7 @@ Then you can use ssh to connect to the head node and check `/var/log/chef-client
 which should confirm where the creation is stuck on or `/var/log/parallelcluster/clustermgtd`
 that contains the reason why capacity cannot be provisioned"
 
+- https://docs.aws.amazon.com/parallelcluster/latest/ug/troubleshooting.html#retrieving-and-preserve-logs
 
 1.1 Check connection to the head node
 ```bash
@@ -170,17 +171,12 @@ sbatch script5.sbatch
 squeue
 ```
 
-#### Using Docker containers
+#### Using Docker images
 
-1. Check docker
-Connect to the cluster and execute:
-```bash
-docker images
-```
-
+1. ...
 TODO ...
 
-2. Submit CPU job using docker container
+2. Submit CPU job using docker images
 
 
 TODO ...

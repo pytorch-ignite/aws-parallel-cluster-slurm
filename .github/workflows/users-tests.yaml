@@ -28,7 +28,6 @@ jobs:
           id testuser
           grep testuser /shared/.userslist
           sudo grep "abc" /shared/home/testuser/.ssh/authorized_keys
-          cat /etc/group | grep docker | grep testuser
 
       - name: Remove user
         run: |
@@ -37,9 +36,6 @@ jobs:
             exit 1
           fi
           if grep testuser /shared/.userslist &>/dev/null ; then
-            exit 1
-          fi
-          if cat /etc/group | grep docker | grep testuser &>/dev/null ; then
             exit 1
           fi
 
