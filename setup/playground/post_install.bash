@@ -30,21 +30,16 @@ if [ "${cfn_node_type}" = "ComputeFleet" ]; then
 fi
 
 
-#Enroot configuration
+# Enroot configuration
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Creating enroot directories" >&2
-if [ "${cfn_node_type}" = "MasterServer" ]; then
-    sudo mkdir /shared/enroot_data
-    sudo chmod 1777 /shared/enroot_data
-    sudo mkdir /shared/enroot_cache
-    sudo chmod 1777 /shared/enroot_cache
-    sudo mkdir /shared/enroot_runtime
-    sudo chmod 1777 /shared/enroot_runtime
-fi
 
 sudo touch /opt/slurm/etc/plugstack.conf
 sudo bash -c "echo 'required /usr/local/lib/slurm/spank_pyxis.so runtime_path=/tmp/pyxis' > /opt/slurm/etc/plugstack.conf"
-sudo sed -i 's!#ENROOT_RUNTIME_PATH        ${XDG_RUNTIME_DIR}/enroot!ENROOT_RUNTIME_PATH        /shared/enroot_runtime/${UID}!g' /usr/local/etc/enroot/enroot.conf
-sudo sed -i 's!#ENROOT_DATA_PATH           ${XDG_DATA_HOME}/enroot!ENROOT_DATA_PATH        /shared/enroot_data/${UID}!g' /usr/local/etc/enroot/enroot.conf
-sudo sed -i 's!#ENROOT_CACHE_PATH          ${XDG_CACHE_HOME}/enroot!ENROOT_CACHE_PATH        /shared/enroot_cache/${UID}!g' /usr/local/etc/enroot/enroot.conf
+
+export ENROOT_RUNTIME_DIR=/shared/enroot_runtime/${UID}
+export ENROOT_CACHE_DIR=/shared/enroot_data/${UID}
+export ENROOT_DATA_DIR=/shared/enroot_cache/${UID}
+
+echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: enroot version: $(enroot version)" >&2
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: STOP" >&2
