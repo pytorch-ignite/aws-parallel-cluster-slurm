@@ -240,6 +240,9 @@ SLURM_DEBUG=2 srun --partition=gpu-compute-spot -w gpu-compute-spot-dy-g4dnxlarg
 SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --pty bash
 
 enroot start /shared/enroot_data/pytorchignite+vision+latest.sqsh /bin/bash
+
+SLURM_DEBUG=2 NVIDIA_VISIBLE_DEVICES= srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh pip list | grep torch
+
 ```
 
 Enable PyTorch hook:
