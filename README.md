@@ -198,3 +198,4 @@ id: ‘alice’: no such user
 - https://github.com/aws-samples/1click-hpc/tree/main/docs
 - https://www.hpcworkshops.com/01-hpc-overview.html
 - https://jiaweizhuang.github.io/blog/aws-hpc-guide/#install-hpc-software-stack-with-spack
+- https://archive.fosdem.org/2020/schedule/event/containers_hpc_unprivileged/attachments/slides/3711/export/events/attachments/containers_hpc_unprivileged/slides/3711/containers_hpc_unprivileged.pdf

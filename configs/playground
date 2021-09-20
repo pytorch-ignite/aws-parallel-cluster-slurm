@@ -20,7 +20,7 @@ vpc_settings = pc-vpc-pubpriv
 queue_settings = cpu-compute-ondemand, cpu-compute-spot, gpu-compute-ondemand, gpu-compute-spot
 scaling_settings = custom
 ebs_settings = shared
-custom_ami = ami-0c13b9775226d5c5f  # our AMI: ubuntu-pcluster-cuda-docker-0.2.1 builded with packer/aws-ubuntu.pkr.hcl
+custom_ami = ami-0a851060b12902f2e  # our AMI: ubuntu-pcluster-cuda-enroot-pyxis-0.3.0 builded with packer/aws-ubuntu.pkr.hcl
 # Our AMI requires 40GB
 master_root_volume_size = 40
 compute_root_volume_size = 40
@@ -31,18 +31,20 @@ master_subnet_id = subnet-055a4a2a3d57187d3
 compute_subnet_id = subnet-0624435f202eb2e11
 use_public_ips = false
 
-[queue cpu-compute-ondemand]
-enable_efa = false
-enable_efa_gdr = false
-compute_type = ondemand
-compute_resource_settings = cpu-ondemand
-disable_hyperthreading = true
-
+# The first [queue] section listed is the default scheduler queue.
+# https://docs.aws.amazon.com/parallelcluster/latest/ug/cluster-definition.html#queue-settings
 [queue cpu-compute-spot]
 enable_efa = false
 enable_efa_gdr = false
 compute_type = spot
 compute_resource_settings = cpu-spot
+disable_hyperthreading = true
+
+[queue cpu-compute-ondemand]
+enable_efa = false
+enable_efa_gdr = false
+compute_type = ondemand
+compute_resource_settings = cpu-ondemand
 disable_hyperthreading = true
 
 [queue gpu-compute-ondemand]

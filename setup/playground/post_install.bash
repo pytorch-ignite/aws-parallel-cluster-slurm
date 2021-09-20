@@ -36,10 +36,15 @@ echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Creating enroot directories" >&2
 sudo touch /opt/slurm/etc/plugstack.conf
 sudo bash -c "echo 'required /usr/local/lib/slurm/spank_pyxis.so runtime_path=/tmp/pyxis' > /opt/slurm/etc/plugstack.conf"
 
+# https://github.com/NVIDIA/pyxis/wiki/Setup#enroot-configuration-example
 export ENROOT_RUNTIME_DIR=/shared/enroot_runtime/${UID}
-export ENROOT_CACHE_DIR=/shared/enroot_data/${UID}
-export ENROOT_DATA_DIR=/shared/enroot_cache/${UID}
+export ENROOT_DATA_DIR=/shared/enroot_data/${UID}
+export ENROOT_CACHE_DIR=/shared/enroot_cache
 
+# This line will create above folders
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: enroot version: $(enroot version)" >&2
+
+# Let's change ownership to 777
+
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: STOP" >&2

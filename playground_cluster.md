@@ -91,7 +91,9 @@ Export list for localhost:
 
 3. Setup conda environment
 
-Connect to the cluster and execute:
+Connect to the cluster. To enable access to `aws-parallel-cluster-slurm` repository,
+add `id_rsa.pub` to project's deploy keys: https://github.com/pytorch-ignite/aws-parallel-cluster-slurm/settings/keys .
+Clone the repository:
 ```bash
 git clone git@github.com:pytorch-ignite/aws-parallel-cluster-slurm.git
 cd aws-parallel-cluster-slurm/setup/playground/
@@ -173,16 +175,45 @@ squeue
 
 #### Using Docker images
 
-1. ...
-TODO ...
+1. Submit a CPU job using docker images:
+```bash
+srun --partition=cpu-compute-spot --container-image=ubuntu:latest grep PRETTY /etc/os-release
+>
+pyxis: importing docker image ...
+PRETTY_NAME="Ubuntu 20.04.3 LTS"
+```
+or
+```bash
+srun -N 2 -l --partition=cpu-compute-spot --container-image=ubuntu:latest grep PRETTY /etc/os-release
+>
+1: pyxis: importing docker image ...
+0: pyxis: importing docker image ...
+1: PRETTY_NAME="Ubuntu 20.04.3 LTS"
+0: PRETTY_NAME="Ubuntu 20.04.3 LTS"
+```
 
-2. Submit CPU job using docker images
+2.
 
-
-TODO ...
 
 #### Remove existing cluster
 
 ```bash
 pcluster delete aws-playground-cluster -c configs/playground
+```
+
+
+### Enroot and srun commands:
+
+```bash
+enroot import docker://python:latest
+
+enroot start --mount $PWD:/ws python+latest.sqsh /bin/bash
+```
+
+- https://github.com/NVIDIA/enroot/blob/master/doc/usage.md
+
+
+```bash
+srun --partition=cpu-compute-spot --container-image=ubuntu:latest --pty bash
+srun --partition=cpu-compute-spot --container-image=python:3.9-alpine --pty ash
 ```
