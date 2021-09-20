@@ -1,0 +1,22 @@
+name: pytorch_ignite_vision
+channels:
+  - pytorch
+  - nvidia
+
+dependencies:
+  - python
+  - cudatoolkit=11.1
+  - pytorch
+  - torchvision
+  - ignite
+  - pip
+  - pip:
+    - clearml
+    - py-config-runner>=0.2.0
+    - fire
+    - tensorboard
+    - tqdm
+    - albumentations
+    - opencv-python-headless
+    - numpy
+    - image-dataset-viz

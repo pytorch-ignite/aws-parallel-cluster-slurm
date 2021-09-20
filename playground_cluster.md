@@ -41,13 +41,14 @@ which sinfo
 sinfo
 >
 PARTITION             AVAIL  TIMELIMIT  NODES  STATE NODELIST
+cpu-compute-ondemand*    up   infinite      4  idle~ cpu-compute-ondemand-dy-t3micro-[1-4]
 cpu-compute-spot         up   infinite      4  idle~ cpu-compute-spot-dy-t3micro-[1-4]
-gpu-compute-on-demand    up   infinite      4  idle~ gpu-compute-on-demand-dy-g4dnxlarge-[1-4]
-gpu-compute-spot*        up   infinite      4  idle~ gpu-compute-spot-dy-g4dnxlarge-[1-4]
+gpu-compute-ondemand     up   infinite      8  idle~ gpu-compute-ondemand-dy-g4dn12xlarge-[1-4],gpu-compute-ondemand-dy-g4dnxlarge-[1-4]
+gpu-compute-spot         up   infinite      8  idle~ gpu-compute-spot-dy-g4dn12xlarge-[1-4],gpu-compute-spot-dy-g4dnxlarge-[1-4]
 
 hostname
 >
-ip-172-31-10-217
+ip-10-0-0-16
 
 srun -N 2 -n 2 -l --partition=cpu-compute-spot hostname
 >
@@ -64,13 +65,10 @@ List available modules (below command can be unavailable):
 ```bash
 module av
 >
----------------------------------------------------------------- /usr/share/modules/modulefiles -----------------------------------------------------------------
-dot  libfabric-aws/1.11.2amzn1.1  module-git  module-info  modules  null  openmpi/4.1.1  use.own
+------------------------------------------------------------------ /usr/share/modules/modulefiles ------------------------------------------------------------------
+dot  libfabric-aws/1.13.0amzn1.0  module-git  module-info  modules  null  openmpi/4.1.1  use.own
 
----------------------------------------------------------------- /usr/share/modules/modulefiles -----------------------------------------------------------------
-dot  libfabric-aws/1.11.2amzn1.1  module-git  module-info  modules  null  openmpi/4.1.1  use.own
-
--------------------------------------------------------- /opt/intel/impi/2019.8.254/intel64/modulefiles ---------------------------------------------------------
+---------------------------------------------------------- /opt/intel/impi/2019.8.254/intel64/modulefiles ----------------------------------------------------------
 intelmpi
 ```
 
@@ -93,6 +91,9 @@ Export list for localhost:
 
 Connect to the cluster. To enable access to `aws-parallel-cluster-slurm` repository,
 add `id_rsa.pub` to project's deploy keys: https://github.com/pytorch-ignite/aws-parallel-cluster-slurm/settings/keys .
+```bash
+cat ~/.ssh/id_rsa.pub
+```
 Clone the repository:
 ```bash
 git clone git@github.com:pytorch-ignite/aws-parallel-cluster-slurm.git
@@ -126,7 +127,7 @@ srun -N 2 -l --partition=cpu-compute-spot conda env list
 Connect to the cluster and activate "test" environment:
 ```bash
 conda activate test
-cd slurm-examples
+cd aws-parallel-cluster-slurm/slurm-examples/pytorch
 sbatch script1.sbatch
 squeue
 ```
@@ -157,20 +158,26 @@ pcluster status aws-playground-cluster -c configs/playground
 
 Connect to the cluster and execute:
 ```bash
+cd aws-parallel-cluster-slurm/setup/conda_envs
 conda env list
 
-conda create -y -n test-gpu
-conda activate test-gpu
-conda install -y pytorch torchvision cudatoolkit=11.1 -c pytorch -c nvidia
+conda env create -f pytorch_ignite_vision.yml -n pytorch_ignite_vision
+conda activate pytorch_ignite_vision
 ```
 
-2. Submit GPU job
+2. Submit a GPU job (PyTorch)
 
 ```bash
-conda activate test-gpu
-cd slurm-examples
+conda activate pytorch_ignite_vision
+cd aws-parallel-cluster-slurm/slurm-examples/pytorch
 sbatch script5.sbatch
 squeue
+```
+
+3. Submit a GPU job (PyTorch-Ignite)
+
+```bash
+
 ```
 
 #### Using Docker images
