@@ -6,7 +6,9 @@ on:
       - master
     paths:
       - "packer/aws-ubuntu.pkr.hcl"
-
+      - "packer/enroot.conf"
+      - "packer/install_nvidia.sh"
+      - "packer/install_pyxis.bash"
 
 jobs:
 

@@ -14,7 +14,7 @@ variable "ami_prefix" {
 
 variable "ami_version" {
   type    = string
-  default = "0.3.0"
+  default = "0.3.1"
 }
 
 
