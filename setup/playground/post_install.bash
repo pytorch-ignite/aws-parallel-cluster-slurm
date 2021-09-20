@@ -2,7 +2,8 @@
 
 . "/etc/parallelcluster/cfnconfig"
 
-users_filepath="/shared/.userslist"
+shared_dir="/shared"
+users_filepath="$shared_dir/.userslist"
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash START" >&2
 
@@ -36,10 +37,8 @@ echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] Creating enroot directories" >&2
 sudo touch /opt/slurm/etc/plugstack.conf
 sudo bash -c "echo 'required /usr/local/lib/slurm/spank_pyxis.so runtime_path=/tmp/pyxis' > /opt/slurm/etc/plugstack.conf"
 
-export ENROOT_RUNTIME_DIR=/shared/enroot_runtime/${UID}
-export ENROOT_CACHE_DIR=/shared/enroot_data/${UID}
-export ENROOT_DATA_DIR=/shared/enroot_cache/${UID}
-
-echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: enroot version: $(enroot version)" >&2
+# https://github.com/NVIDIA/pyxis/wiki/Setup#enroot-configuration-example
+# Let's configure only cache folder on shared:
+sudo bash -c "echo 'ENROOT_CACHE_DIR=$shared_dir/enroot_cache' >> /etc/environment"
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: STOP" >&2

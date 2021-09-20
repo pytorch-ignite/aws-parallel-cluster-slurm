@@ -29,6 +29,9 @@ sudo make --directory=$enroot_dir setcap
 sudo rm -rf $enroot_dir
 sudo apt-get clean
 
+# Enable PyTorch hook:
+sudo cp /usr/local/share/enroot/hooks.d/50-slurm-pytorch.sh /usr/local/etc/enroot/hooks.d/
+
 # Use our configuration:
 sudo cp $script_folder/enroot.conf /usr/local/etc/enroot/enroot.conf
 

@@ -91,7 +91,9 @@ Export list for localhost:
 
 3. Setup conda environment
 
-Connect to the cluster and execute:
+Connect to the cluster. To enable access to `aws-parallel-cluster-slurm` repository,
+add `id_rsa.pub` to project's deploy keys: https://github.com/pytorch-ignite/aws-parallel-cluster-slurm/settings/keys .
+Clone the repository:
 ```bash
 git clone git@github.com:pytorch-ignite/aws-parallel-cluster-slurm.git
 cd aws-parallel-cluster-slurm/setup/playground/
@@ -173,16 +175,90 @@ squeue
 
 #### Using Docker images
 
-1. ...
-TODO ...
+1. Submit a CPU job using docker images:
+```bash
+srun --partition=cpu-compute-spot --container-image=ubuntu:latest grep PRETTY /etc/os-release
+>
+pyxis: importing docker image ...
+PRETTY_NAME="Ubuntu 20.04.3 LTS"
+```
+or
+```bash
+srun -N 2 -l --partition=cpu-compute-spot --container-image=ubuntu:latest grep PRETTY /etc/os-release
+>
+1: pyxis: importing docker image ...
+0: pyxis: importing docker image ...
+1: PRETTY_NAME="Ubuntu 20.04.3 LTS"
+0: PRETTY_NAME="Ubuntu 20.04.3 LTS"
+```
 
-2. Submit CPU job using docker images
+2. Submit a CPU job using `pytorchignite/base:latest` docker image and `sbatch`
 
+2.1 Import docker image in `sqsh` format:
 
-TODO ...
+```bash
+enroot import -o /shared/enroot_data/pytorchignite+vision+latest.sqsh docker://pytorchignite/vision:latest
+```
+
+2.2 Execute a command from the container:
+
+```bash
+SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh pip list | grep torch
+
+SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh echo "$WORLD_SIZE:$RANK:$LOCAL_RANK:$MASTER_ADDR:$MASTER_PORT"
+
+SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh python -c "import os; print(os.environ)"
+```
 
 #### Remove existing cluster
 
 ```bash
 pcluster delete aws-playground-cluster -c configs/playground
+```
+
+
+### Enroot and srun commands:
+
+```bash
+enroot import docker://python:latest
+
+enroot start --mount $PWD:/ws python+latest.sqsh /bin/bash
+```
+
+- https://github.com/NVIDIA/enroot/blob/master/doc/usage.md
+
+
+Debug enroot configuration from a worker node:
+```bash
+srun --partition=cpu-compute-spot --pty bash
+srun --partition=cpu-compute-spot --container-image=ubuntu:latest --pty bash
+srun --partition=cpu-compute-spot --container-image=python:3.9-alpine --pty ash
+
+
+SLURM_DEBUG=2 srun --partition=gpu-compute-spot -w gpu-compute-spot-dy-g4dnxlarge-1 --pty bash
+
+SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --pty bash
+
+enroot start /shared/enroot_data/pytorchignite+vision+latest.sqsh /bin/bash
+
+SLURM_DEBUG=2 NVIDIA_VISIBLE_DEVICES= srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh pip list | grep torch
+
+```
+
+Enable PyTorch hook:
+```
+sudo cp /usr/local/share/enroot/hooks.d/50-slurm-pytorch.sh /usr/local/etc/enroot/hooks.d/
+```
+
+WEIRD SPOT INSTANCE ERROR MESSAGE
+```
+1632138698570
+@log
+201193730185:/aws/parallelcluster/aws-playground-cluster
+@logStream
+ip-10-0-0-179.i-073d7e1c2820a64e5.slurm_resume
+@message
+2021-09-20 11:51:36,615 - [slurm_plugin.common:add_instances_for_nodes] - ERROR - Encountered exception when launching instances for nodes (x1) ['gpu-compute-spot-dy-g4dnxlarge-1']: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 1): There is no Spot capacity available that matches your request.
+@timestamp
+1632138696615
 ```
