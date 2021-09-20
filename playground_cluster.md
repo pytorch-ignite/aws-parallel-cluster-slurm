@@ -30,6 +30,12 @@ that contains the reason why capacity cannot be provisioned"
 pcluster ssh aws-playground-cluster -i ~/.ssh/aws-playground-cluster.pem
 ```
 
+1.2 Get master node public IP:
+
+```bash
+aws ec2 describe-instances --filters 'Name=instance-state-name,Values=running' --query 'Reservations[*].Instances[*].[Tags[?Key==`Name`]|[0].Value,PublicDnsName]' --output text
+```
+
 2. Check cluster
 
 Connect to the cluster and execute:
@@ -52,8 +58,8 @@ ip-10-0-0-16
 
 srun -N 2 -n 2 -l --partition=cpu-compute-spot hostname
 >
-0: compute-spot-dy-t3micro-1
-1: compute-spot-dy-t3micro-2
+0: cpu-compute-spot-dy-t3micro-1
+1: cpu-compute-spot-dy-t3micro-2
 ```
 
 2.1 Module Environment
@@ -102,6 +108,10 @@ sh install_miniconda.sh
 
 source ~/.bashrc
 conda env list
+>
+# conda environments:
+#
+base                  *  /shared/conda
 ```
 
 ```bash
@@ -110,16 +120,16 @@ conda activate test
 conda install -y  pytorch cpuonly -c pytorch
 srun -N 2 -l --partition=cpu-compute-spot conda env list
 >
-1: # conda environments:
-1: #
-1: base                     /code/miniconda3
-1: test                  *  /code/miniconda3/envs/test
-1:
 0: # conda environments:
 0: #
-0: base                     /code/miniconda3
-0: test                  *  /code/miniconda3/envs/test
+0: base                     /shared/conda
+0: test                  *  /shared/conda/envs/test
 0:
+1: # conda environments:
+1: #
+1: base                     /shared/conda
+1: test                  *  /shared/conda/envs/test
+1:
 ```
 
 4. Examples
@@ -130,6 +140,33 @@ conda activate test
 cd aws-parallel-cluster-slurm/slurm-examples/pytorch
 sbatch script1.sbatch
 squeue
+```
+
+```bash
+head -100 slurm_<i>.out
+>
+Mon Sep 20 21:26:38 UTC 2021
+cpu-compute-spot-dy-t3micro-1
+/home/ubuntu/aws-parallel-cluster-slurm/slurm-examples/pytorch
+# conda environments:
+#
+base                     /shared/conda
+test                  *  /shared/conda/envs/test
+
+/shared/conda/envs/test/bin/python
+Python 3.9.7
+# packages in environment at /shared/conda/envs/test:
+#
+# Name                    Version                   Build  Channel
+_libgcc_mutex             0.1                        main
+_openmp_mutex             4.5                       1_gnu
+blas                      1.0                         mkl
+ca-certificates           2021.7.5             h06a4308_1
+certifi                   2021.5.30        py39h06a4308_0
+cpuonly                   1.0                           0    pytorch
+...
+1.9.0
+Mon Sep 20 21:26:40 UTC 2021
 ```
 
 #### Cluster AWS dashboard
@@ -162,7 +199,6 @@ cd aws-parallel-cluster-slurm/setup/conda_envs
 conda env list
 
 conda env create -f pytorch_ignite_vision.yml -n pytorch_ignite_vision
-conda activate pytorch_ignite_vision
 ```
 
 2. Submit a GPU job (PyTorch)
