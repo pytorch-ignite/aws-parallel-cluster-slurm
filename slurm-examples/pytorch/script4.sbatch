@@ -2,7 +2,7 @@
 #SBATCH --job-name=script4
 #SBATCH --output=slurm_%j.out
 #SBATCH --nodes=2
-#SBATCH --ntasks-per-node=2
+#SBATCH --ntasks-per-node=1
 #SBATCH --time=00:05:00
 #SBATCH --partition=cpu-compute-spot
 
