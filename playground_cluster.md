@@ -249,8 +249,11 @@ Output:
 [gpu-compute-ondemand-dy-g4dnxlarge-1:15011], [nccl], process 1/2
 0 ignite version: 0.4.6
 [gpu-compute-ondemand-dy-g4dnxlarge-1:15011], [nccl], process 0/2
-
 ```
+
+5. Train resnet18 on CIFAR10 with PyTorch-Ignite
+
+- [readme.md](slurm-examples/ignite/cifar10/readme.md)
 
 #### Using Docker images
 
@@ -285,7 +288,7 @@ enroot import -o /shared/enroot_data/pytorchignite+vision+latest.sqsh docker://p
 - Shared folder is still at `/shared`
 
 ```bash
-NVIDIA_VISIBLE_DEVICES="" srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh --no-container-remap-root --container-workdir=$PWD bash -c 'echo "Current working directory: $PWD, $(ls $PWD)" && echo && echo "Shared directory at /shared : $(ls /shared)" && echo && pip list | grep torch && echo && echo "Enroot pytorch hook applied: $WORLD_SIZE:$RANK:$LOCAL_RANK:$MASTER_ADDR:$MASTER_PORT"'
+NVIDIA_VISIBLE_DEVICES="" srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh --container-workdir=$PWD --no-container-remap-root bash -c 'echo "Current working directory: $PWD, $(ls $PWD)" && echo && echo "Shared directory at /shared : $(ls /shared)" && echo && pip list | grep torch && echo && echo "Enroot pytorch hook applied: $WORLD_SIZE:$RANK:$LOCAL_RANK:$MASTER_ADDR:$MASTER_PORT"'
 ```
 
 #### Remove existing cluster

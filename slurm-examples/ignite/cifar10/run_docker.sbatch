@@ -13,4 +13,4 @@ cmd="pip install --upgrade git+https://github.com/pytorch/ignite.git && python c
 
 cname="/shared/enroot_data/pytorchignite+vision+latest.sqsh"
 
-NVIDIA_VISIBLE_DEVICES="" srun -l --container-name=ignite-vision --container-image=$cname --container-workdir=$PWD bash -c "$cmd"
+NVIDIA_VISIBLE_DEVICES="" srun -l --container-name=ignite-vision --container-image=$cname --container-workdir=$PWD --no-container-remap-root bash -c "$cmd"
