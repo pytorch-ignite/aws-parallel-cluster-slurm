@@ -14,6 +14,9 @@ if [ "${cfn_node_type}" = "MasterServer" ]; then
     chmod 600 $users_filepath
     # >
     # -rw-------  1 root root    0 Jul 18 00:13 .userslist
+
+    # Create common folder for sqsh files
+    mkdir -p -m 777 /shared/enroot_data
 fi
 
 if [ "${cfn_node_type}" = "ComputeFleet" ]; then
