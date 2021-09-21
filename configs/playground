@@ -17,10 +17,10 @@ base_os = ubuntu2004
 s3_read_resource = arn:aws:s3:::aws-parallel-cluster-slurm/playground*
 post_install = s3://aws-parallel-cluster-slurm/playground/post_install.bash
 vpc_settings = pc-vpc-pubpriv
-queue_settings = cpu-compute-ondemand, cpu-compute-spot, gpu-compute-ondemand, gpu-compute-spot
+queue_settings = cpu-compute-spot, cpu-compute-ondemand, gpu-compute-spot, gpu-compute-ondemand
 scaling_settings = custom
 ebs_settings = shared
-custom_ami = ami-0119d8fdd20fcee9b  # our AMI: ubuntu-pcluster-cuda-enroot-pyxis-0.3.1 builded with packer/aws-ubuntu.pkr.hcl
+custom_ami = ami-0ee10598e9d5ebad0  # our AMI: ubuntu-pcluster-cuda-enroot-pyxis-0.3.2 builded with packer/aws-ubuntu.pkr.hcl
 # Our AMI requires 40GB
 master_root_volume_size = 40
 compute_root_volume_size = 40
@@ -70,9 +70,9 @@ max_count = 4
 
 [compute_resource cpu-spot]
 initial_count = 0
-instance_type = t3.micro
+instance_type = c5.large
 max_count = 4
-spot_price = 0.0031
+spot_price = 0.0195
 
 [compute_resource gpu-t4x1-ondemand]
 initial_count = 0
