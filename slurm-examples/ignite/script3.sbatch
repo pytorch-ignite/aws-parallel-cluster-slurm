@@ -4,8 +4,8 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks-per-node=1
 #SBATCH --time=00:05:00
-#SBATCH --partition=gpu-compute-ondemand
-#SBATCH --nodelist=gpu-compute-ondemand-dy-g4dnxlarge-1
+#SBATCH --partition=gpu-compute-spot
+#SBATCH --nodelist=gpu-compute-spot-dy-g4dnxlarge-1
 
 set -e
 

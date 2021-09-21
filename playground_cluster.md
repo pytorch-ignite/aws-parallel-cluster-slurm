@@ -329,8 +329,9 @@ Enable PyTorch hook:
 sudo cp /usr/local/share/enroot/hooks.d/50-slurm-pytorch.sh /usr/local/etc/enroot/hooks.d/
 ```
 
-WEIRD SPOT INSTANCE ERROR MESSAGE
+WEIRD SPOT INSTANCE ERROR MESSAGES
 ```
+@ingestionTime
 1632138698570
 @log
 201193730185:/aws/parallelcluster/aws-playground-cluster
@@ -340,6 +341,18 @@ ip-10-0-0-179.i-073d7e1c2820a64e5.slurm_resume
 2021-09-20 11:51:36,615 - [slurm_plugin.common:add_instances_for_nodes] - ERROR - Encountered exception when launching instances for nodes (x1) ['gpu-compute-spot-dy-g4dnxlarge-1']: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 1): There is no Spot capacity available that matches your request.
 @timestamp
 1632138696615
+
+
+@ingestionTime
+1632209819818
+@log
+201193730185:/aws/parallelcluster/aws-playground-cluster
+@logStream
+ip-10-0-0-16.i-0e994a2110d84941d.slurm_resume
+@message
+2021-09-21 07:36:57,162 - [slurm_plugin.common:add_instances_for_nodes] - ERROR - Encountered exception when launching instances for nodes (x2) ['gpu-compute-spot-dy-g4dnxlarge-1', 'gpu-compute-spot-dy-g4dnxlarge-2']: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 1): We currently do not have sufficient g4dn.xlarge capacity in the Availability Zone you requested (us-east-2c). Our system will be working on provisioning additional capacity. You can currently get g4dn.xlarge capacity by not specifying an Availability Zone in your request or choosing us-east-2a, us-east-2b.
+@timestamp
+1632209817162
 ```
 
 
@@ -354,4 +367,19 @@ ip-10-0-0-179.i-073d7e1c2820a64e5.slurm_resume
 1: slurmstepd: error: spank: required plugin spank_pyxis.so: task_init() failed with rc=-1
 1: slurmstepd: error: Failed to invoke spank plugin stack
 srun: error: gpu-compute-ondemand-dy-g4dnxlarge-2: task 1: Exited with exit code 1
+```
+
+
+- https://github.com/aws/aws-parallelcluster/issues/3114
+
+```
+export REGION="us-east-2"
+export INSTANCE="g4dn.xlarge"
+export NOW=$(date -Iseconds)
+
+aws --region $REGION ec2 describe-spot-price-history --instance-types $INSTANCE --product-description "Linux/UNIX" --start-time "$NOW" | sort -n -k5 | awk '{print $2}' | sort | uniq
+
+aws --region $REGION ec2 describe-subnets --filters "Name=defaultForAz,Values=true"
+
+aws --region $REGION autoscaling describe-auto-scaling-groups | egrep autoScalingGroupName | egrep playground-ComputeFleet | awk '{print $3}'
 ```
