@@ -43,5 +43,7 @@ sudo bash -c "echo 'required /usr/local/lib/slurm/spank_pyxis.so runtime_path=/t
 # https://github.com/NVIDIA/pyxis/wiki/Setup#enroot-configuration-example
 # Let's configure only cache folder on shared:
 sudo bash -c "echo 'ENROOT_CACHE_DIR=$shared_dir/enroot_cache' >> /etc/environment"
+# Automatically mount /shared
+sudo bash -c "echo '/shared /shared none x-create=dir,bind' >> /usr/local/etc/enroot/mounts.d/30-shared.fstab"
 
 echo "[INFO][$(date '+%Y-%m-%d %H:%M:%S')] post_install.bash: STOP" >&2
