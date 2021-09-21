@@ -210,9 +210,45 @@ sbatch script5.sbatch
 squeue
 ```
 
-3. Submit a GPU job (PyTorch-Ignite)
+3. Submit a CPU job with PyTorch-Ignite
 
 ```bash
+conda activate pytorch_ignite_vision
+cd aws-parallel-cluster-slurm/slurm-examples/ignite
+sbatch script1.sbatch
+squeue
+```
+Output:
+```
+2021-09-20 22:06:36,240 ignite.distributed.launcher.Parallel INFO: Initialized processing group with backend: 'gloo'
+2021-09-20 22:06:36,240 ignite.distributed.launcher.Parallel INFO: - Run '<function main_fn at 0x7f0a65206160>' in 2 processes
+2021-09-20 22:06:36,441 ignite.distributed.launcher.Parallel INFO: End of run
+2021-09-20 22:06:36,441 ignite.distributed.launcher.Parallel INFO: Finalized processing group with backend: 'gloo'
+1 ignite version: 0.4.6
+[cpu-compute-spot-dy-t3micro-1:15007], [gloo], process 1/2
+0 ignite version: 0.4.6
+[cpu-compute-spot-dy-t3micro-1:15007], [gloo], process 0/2
+```
+
+4. Submit a GPU job with PyTorch-Ignite
+```bash
+conda activate pytorch_ignite_vision
+cd aws-parallel-cluster-slurm/slurm-examples/ignite
+sbatch -v script2.sbatch
+squeue
+```
+Output:
+```
+[W ProcessGroupNCCL.cpp:1569] Rank 0 using best-guess GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device.
+[W ProcessGroupNCCL.cpp:1569] Rank 1 using best-guess GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device.
+2021-09-20 22:35:03,406 ignite.distributed.launcher.Parallel INFO: Initialized processing group with backend: 'nccl'
+2021-09-20 22:35:03,406 ignite.distributed.launcher.Parallel INFO: - Run '<function main_fn at 0x7f1919f2b160>' in 2 processes
+2021-09-20 22:35:03,616 ignite.distributed.launcher.Parallel INFO: End of run
+2021-09-20 22:35:03,616 ignite.distributed.launcher.Parallel INFO: Finalized processing group with backend: 'nccl'
+1 ignite version: 0.4.6
+[gpu-compute-ondemand-dy-g4dnxlarge-1:15011], [nccl], process 1/2
+0 ignite version: 0.4.6
+[gpu-compute-ondemand-dy-g4dnxlarge-1:15011], [nccl], process 0/2
 
 ```
 
@@ -304,4 +340,18 @@ ip-10-0-0-179.i-073d7e1c2820a64e5.slurm_resume
 2021-09-20 11:51:36,615 - [slurm_plugin.common:add_instances_for_nodes] - ERROR - Encountered exception when launching instances for nodes (x1) ['gpu-compute-spot-dy-g4dnxlarge-1']: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 1): There is no Spot capacity available that matches your request.
 @timestamp
 1632138696615
+```
+
+
+```
+1: slurmstepd: error: pyxis: container start failed with error code: 1
+1: slurmstepd: error: pyxis: printing contents of log file ...
+1: slurmstepd: error: pyxis:     /usr/local/etc/enroot/hooks.d/50-slurm-pytorch.sh: line 39: [: 1(x2): integer expression expected
+1: slurmstepd: error: pyxis:     /etc/profile.d/01-locale-fix.sh: line 2: /usr/bin/locale-check: No such file or directory
+1: slurmstepd: error: pyxis:     /etc/rc: line 4: cd: /workspace: No such file or directory
+1: slurmstepd: error: pyxis: couldn't start container
+1: slurmstepd: error: pyxis: if the image has an unusual entrypoint, try using --no-container-entrypoint
+1: slurmstepd: error: spank: required plugin spank_pyxis.so: task_init() failed with rc=-1
+1: slurmstepd: error: Failed to invoke spank plugin stack
+srun: error: gpu-compute-ondemand-dy-g4dnxlarge-2: task 1: Exited with exit code 1
 ```
