@@ -11,7 +11,4 @@ set -e
 
 srun -l hostname
 
-srun -l echo "SLURM_JOB_ID: $SLURM_JOB_ID\n SLURM_NNODES: $SLURM_NNODES\n SLURM_NTASKS: $SLURM_NTASKS\n SLURM_NTASKS_PER_NODE: $SLURM_NTASKS_PER_NODE\n SLURM_LOCALID: $SLURM_LOCALID"
-srun -l echo "WORLD_SIZE: $WORLD_SIZE\n RANK: $RANK\n LOCAL_RANK: $LOCAL_RANK"
-
 srun python check_ddp_pytorch_gpu.py

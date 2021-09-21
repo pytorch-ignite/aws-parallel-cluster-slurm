@@ -10,5 +10,3 @@
 set -e
 
 srun python cifar10-distributed.py run --backend=nccl
-
-srun python cifar10-distributed.py run --backend=gloo

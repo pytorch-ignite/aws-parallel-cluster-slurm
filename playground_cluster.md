@@ -249,8 +249,11 @@ Output:
 [gpu-compute-ondemand-dy-g4dnxlarge-1:15011], [nccl], process 1/2
 0 ignite version: 0.4.6
 [gpu-compute-ondemand-dy-g4dnxlarge-1:15011], [nccl], process 0/2
-
 ```
+
+5. Train resnet18 on CIFAR10 with PyTorch-Ignite
+
+- [readme.md](slurm-examples/ignite/cifar10/readme.md)
 
 #### Using Docker images
 
@@ -281,12 +284,11 @@ enroot import -o /shared/enroot_data/pytorchignite+vision+latest.sqsh docker://p
 
 2.2 Execute a command from the container:
 
+- Current working directory: `--container-workdir=$PWD`
+- Shared folder is still at `/shared`
+
 ```bash
-SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh pip list | grep torch
-
-SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh echo "$WORLD_SIZE:$RANK:$LOCAL_RANK:$MASTER_ADDR:$MASTER_PORT"
-
-SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh python -c "import os; print(os.environ)"
+NVIDIA_VISIBLE_DEVICES="" srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh --container-workdir=$PWD --no-container-remap-root bash -c 'echo "Current working directory: $PWD, $(ls $PWD)" && echo && echo "Shared directory at /shared : $(ls /shared)" && echo && pip list | grep torch && echo && echo "Enroot pytorch hook applied: $WORLD_SIZE:$RANK:$LOCAL_RANK:$MASTER_ADDR:$MASTER_PORT"'
 ```
 
 #### Remove existing cluster
@@ -316,12 +318,13 @@ srun --partition=cpu-compute-spot --container-image=python:3.9-alpine --pty ash
 
 SLURM_DEBUG=2 srun --partition=gpu-compute-spot -w gpu-compute-spot-dy-g4dnxlarge-1 --pty bash
 
-SLURM_DEBUG=2 srun --partition=gpu-compute-ondemand -w gpu-compute-ondemand-dy-g4dnxlarge-1 --pty bash
-
 enroot start /shared/enroot_data/pytorchignite+vision+latest.sqsh /bin/bash
 
 SLURM_DEBUG=2 NVIDIA_VISIBLE_DEVICES= srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh pip list | grep torch
 
+SLURM_DEBUG=2 NVIDIA_VISIBLE_DEVICES="" srun --partition=cpu-compute-spot --container-name=ignite-vision --container-image=/shared/enroot_data/pytorchignite+vision+latest.sqsh --pty bash
+
+srun -N 2 -n 2 -p cpu-compute-spot -l bash -c 'echo "$SLURM_JOB_ID,$SLURM_NTASKS,$SLURM_PROCID,$SLURM_LOCALID,$SLURM_STEP_TASKS_PER_NODE"'
 ```
 
 Enable PyTorch hook:

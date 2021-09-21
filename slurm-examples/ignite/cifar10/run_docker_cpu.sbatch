@@ -1,15 +1,14 @@
 #!/bin/bash
-#SBATCH --job-name=cifar10
+#SBATCH --job-name=cifar10-cpu
 #SBATCH --output=slurm_%j.out
 #SBATCH --nodes=2
-#SBATCH --ntasks-per-node=1
+#SBATCH --ntasks=2
 #SBATCH --time=00:05:00
-#SBATCH --partition=gpu-compute-ondemand
-#SBATCH --nodelist=gpu-compute-ondemand-dy-g4dnxlarge-1
+#SBATCH --partition=cpu-compute-spot
 
 set -e
 
-cmd="pip install --upgrade git+https://github.com/pytorch/ignite.git && python cifar10-distributed.py run --backend=nccl"
+cmd="pip install --upgrade git+https://github.com/pytorch/ignite.git && python cifar10-distributed.py run --backend=gloo"
 
 cname="/shared/enroot_data/pytorchignite+vision+latest.sqsh"
 
