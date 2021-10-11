@@ -1,5 +1,7 @@
 # AWS Parallel Cluster (SLURM) setup and info
 
+🚧 WIP project, scope is limited to our own use-cases 🚧
+
 > AWS ParallelCluster is an AWS supported open source cluster management tool that helps you to deploy and manage high performance computing (HPC) clusters in the AWS Cloud. Built on the open source CfnCluster project, AWS ParallelCluster enables you to quickly build an HPC compute environment in AWS. It automatically sets up the required compute resources and shared filesystem. You can use AWS ParallelCluster with batch schedulers, such as AWS Batch and Slurm. AWS ParallelCluster facilitates quick start proof of concept deployments and production deployments. You can also build higher level workflows, such as a genomics portal that automates an entire DNA sequencing workflow, on top of AWS ParallelCluster.
 
 - https://docs.aws.amazon.com/parallelcluster/latest/ug/what-is-aws-parallelcluster.html
